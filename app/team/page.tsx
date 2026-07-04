@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader, Section } from "@/components/PageHeader";
+import { getActiveTeamMembers } from "@/lib/services/team";
 
 export const metadata: Metadata = {
   title: "Team & Leadership",
@@ -10,59 +11,6 @@ export const metadata: Metadata = {
     description: "Founders, board, and advisors of the Center for African International Relations.",
   },
 };
-
-type Person = {
-  name: string;
-  role: string;
-  bio: string;
-  location: string;
-  focus: string[];
-  accent?: "forest" | "gold" | "accent";
-};
-
-const LEADERSHIP: Person[] = [
-  {
-    name: "Mr. Olatunbosun Williams",
-    role: "Chairman & President",
-    location: "Lansing, MI · Abuja, NG",
-    bio: "Founder of CAIR. Two decades of work across diaspora policy, civic infrastructure, and Africa–America institution-building.",
-    focus: ["Strategy", "Policy", "Partnerships"],
-    accent: "forest",
-  },
-  {
-    name: "Dr. Echo Emmanuel Ogbenjuwa",
-    role: "Vice Chairman",
-    location: "Washington, D.C.",
-    bio: "Academic and practitioner bridging governance research with on-the-ground diplomatic engagement across West and Central Africa.",
-    focus: ["Governance", "Research", "Diplomacy"],
-    accent: "accent",
-  },
-  {
-    name: "Mrs. Echo Mary Ocholongwa",
-    role: "Secretary",
-    location: "Abuja, Nigeria",
-    bio: "Operations and institutional design lead, responsible for the constitutional integrity and member-facing programs of CAIR.",
-    focus: ["Operations", "Membership", "Programs"],
-    accent: "gold",
-  },
-  {
-    name: "Ambassador Omolara Williams",
-    role: "Treasurer",
-    location: "Lansing, Michigan",
-    bio: "Career diplomat with deep financial stewardship experience across multilateral institutions and pan-African initiatives.",
-    focus: ["Finance", "Diplomacy", "Stewardship"],
-    accent: "forest",
-  },
-];
-
-const ADVISORS: Pick<Person, "name" | "role" | "location">[] = [
-  { name: "Prof. Ade Okonkwo", role: "Senior Advisor · Trade & AfCFTA", location: "Accra, Ghana" },
-  { name: "Hon. Linda Carter", role: "Senior Advisor · U.S. Policy", location: "Detroit, Michigan" },
-  { name: "Dr. Kwame Asante", role: "Fellow · Peace & Security", location: "Nairobi, Kenya" },
-  { name: "Ms. Aïcha Diallo", role: "Fellow · Youth Diplomacy", location: "Dakar, Senegal" },
-  { name: "Dr. Samuel Mensah", role: "Fellow · Research & Publications", location: "Boston, Massachusetts" },
-  { name: "Mrs. Zainab Bello", role: "Advisor · Diaspora Engagement", location: "London, UK" },
-];
 
 function initials(name: string) {
   return name
@@ -74,13 +22,17 @@ function initials(name: string) {
     .join("");
 }
 
-const accentStyles: Record<NonNullable<Person["accent"]>, string> = {
-  forest: "bg-[var(--forest-deep)] text-[var(--primary-foreground)]",
-  gold: "bg-[var(--gold)] text-[var(--forest-deep)]",
-  accent: "bg-[var(--accent)] text-[var(--accent-foreground)]",
-};
+const ACCENTS = [
+  "bg-[var(--forest-deep)] text-[var(--primary-foreground)]",
+  "bg-[var(--accent)] text-[var(--accent-foreground)]",
+  "bg-[var(--gold)] text-[var(--forest-deep)]",
+];
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  const members = await getActiveTeamMembers();
+  const leadership = members.filter((m) => m.department === "Executive");
+  const advisors = members.filter((m) => m.department !== "Executive");
+
   return (
     <>
       <PageHeader
@@ -96,8 +48,8 @@ export default function TeamPage() {
       <Section className="border-y border-border py-10">
         <dl className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {[
-            ["4", "Founding officers"],
-            ["12+", "Board & advisors"],
+            [String(leadership.length), "Founding officers"],
+            [`${advisors.length}+`, "Board & advisors"],
             ["2", "Headquarters"],
             ["7", "Countries represented"],
           ].map(([num, label]) => (
@@ -123,35 +75,25 @@ export default function TeamPage() {
         </div>
 
         <div className="grid gap-5 md:grid-cols-6 md:auto-rows-[minmax(260px,auto)]">
-          {LEADERSHIP.map((p, i) => {
+          {leadership.map((p, i) => {
             const span = i % 3 === 0 ? "md:col-span-4" : "md:col-span-2";
             return (
               <article
-                key={p.name}
+                key={p.id}
                 className={`group relative flex flex-col overflow-hidden rounded-sm border border-border bg-card transition-all hover:-translate-y-[2px] hover:border-[var(--accent)] hover:shadow-lg ${span}`}
               >
-                <div className={`flex items-center gap-5 p-7 ${accentStyles[p.accent ?? "forest"]}`}>
+                <div className={`flex items-center gap-5 p-7 ${ACCENTS[i % ACCENTS.length]}`}>
                   <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-background/15 font-display text-2xl backdrop-blur">
                     {initials(p.name)}
                   </div>
                   <div>
                     <div className="font-display text-xl leading-tight md:text-2xl">{p.name}</div>
-                    <div className="text-xs uppercase tracking-[0.18em] opacity-80">{p.role}</div>
+                    <div className="text-xs uppercase tracking-[0.18em] opacity-80">{p.title}</div>
                   </div>
                 </div>
 
                 <div className="flex flex-1 flex-col gap-4 p-7">
                   <p className="text-foreground/80">{p.bio}</p>
-                  <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-2">
-                    <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{p.location}</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {p.focus.map((f) => (
-                        <span key={f} className="rounded-sm bg-secondary px-2 py-1 text-[10px] uppercase tracking-wider text-secondary-foreground">
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 <div
@@ -173,21 +115,18 @@ export default function TeamPage() {
         </div>
 
         <ul className="divide-y divide-border border-y border-border">
-          {ADVISORS.map((a) => (
+          {advisors.map((a) => (
             <li
-              key={a.name}
-              className="group grid grid-cols-[auto_1fr_auto] items-center gap-6 py-5 transition-colors hover:bg-background"
+              key={a.id}
+              className="group grid grid-cols-[auto_1fr] items-center gap-6 py-5 transition-colors hover:bg-background"
             >
               <div className="grid h-11 w-11 place-items-center rounded-full border border-border bg-background font-display text-sm text-[var(--forest-deep)] transition-colors group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
                 {initials(a.name)}
               </div>
               <div>
                 <div className="font-display text-lg text-[var(--forest-deep)]">{a.name}</div>
-                <div className="text-sm text-foreground/70">{a.role}</div>
+                <div className="text-sm text-foreground/70">{a.title}</div>
               </div>
-              <span className="hidden text-xs uppercase tracking-[0.18em] text-muted-foreground md:inline">
-                {a.location}
-              </span>
             </li>
           ))}
         </ul>

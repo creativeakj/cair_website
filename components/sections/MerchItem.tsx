@@ -23,7 +23,6 @@ export type MerchItemData = {
   slug: string;
   name: string;
   category: string;
-  categoryLabel: string;
   image: string;
 };
 
@@ -82,7 +81,7 @@ export function MerchItem({ item }: { item: MerchItemData }) {
               className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
             />
             <div className="absolute left-3 top-3 rounded-full bg-[var(--forest-deep)]/85 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white backdrop-blur">
-              {item.categoryLabel}
+              {item.category.split(" · ").at(-1)}
             </div>
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-border bg-background px-5 py-4">

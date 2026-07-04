@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Outfit } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -42,6 +42,10 @@ export const metadata: Metadata = {
     description:
       "CAIR fosters strong, mutually beneficial relations between Africa and America through diplomacy, research, advocacy, and partnerships.",
   },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
 };
 
 export default function RootLayout({

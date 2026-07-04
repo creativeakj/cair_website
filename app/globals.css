@@ -50,6 +50,7 @@
 }
 
 :root {
+  color-scheme: light;
   --radius: 0.25rem;
   /* CAIR brand: deep navy primary, gold eyebrow accent, teal accent */
   --background: oklch(0.985 0.005 220);

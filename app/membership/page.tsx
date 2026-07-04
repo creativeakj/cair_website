@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Vote, Users, BookOpenCheck, Landmark } from "lucide-react";
 import { PageHeader, Section } from "@/components/PageHeader";
 
 export const metadata: Metadata = {
@@ -10,6 +11,13 @@ export const metadata: Metadata = {
     description: "Join a global network advancing African–American international relations.",
   },
 };
+
+const BENEFITS = [
+  { icon: Vote, title: "A voice that counts", desc: "Voting rights in the General Assembly on constitutional and strategic matters." },
+  { icon: Users, title: "A global network", desc: "Direct access to diplomats, scholars, and institutions across Africa, America, and allied nations." },
+  { icon: BookOpenCheck, title: "Research access", desc: "Early access to CAIR publications, working papers, and policy briefings." },
+  { icon: Landmark, title: "A governance path", desc: "Eligibility to serve on the Board, Advisory Council, or a thematic unit." },
+] as const;
 
 const TIERS = [
   ["Institutional", "For organizations", "Universities, think tanks, NGOs, corporations, and government-affiliated entities aligned with CAIR's mission.", ["Voting in General Assembly", "Eligible for governance", "Institutional convenings"]],
@@ -26,6 +34,18 @@ export default function Membership() {
         title={<>Join a network shaping <span className="text-[var(--gold)]">Africa–America</span> relations.</>}
         lede="Membership of CAIR is open to institutions and individuals committed to the Center's mission, values, and Constitution."
       />
+
+      <Section className="border-b border-border">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
+          {BENEFITS.map(({ icon: Icon, title, desc }) => (
+            <div key={title}>
+              <Icon className="h-6 w-6 text-[var(--accent)]" strokeWidth={1.5} />
+              <div className="mt-3 font-display text-lg text-[var(--forest-deep)]">{title}</div>
+              <p className="mt-2 text-sm text-foreground/70">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
 
       <Section>
         <div className="grid gap-px bg-border md:grid-cols-2">

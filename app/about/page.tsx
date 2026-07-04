@@ -19,6 +19,14 @@ const OBJECTIVES = [
   ["Peace, Security & Climate", "Support cooperation on peace, security, and the shared climate agenda."],
 ];
 
+const ORGANS = [
+  ["General Assembly", "The supreme governing body composed of all registered members. Approves constitutional amendments, elects the Board, and reviews annual reports."],
+  ["Board of Directors", "9–15 members from Africa, the U.S., and allied nations, with at least 40% women and youth. Sets strategic direction; 3-year renewable term."],
+  ["Executive Secretariat", "Administrative and operational arm led by an Executive Director. Implements programs, manages staff, and liaises with stakeholders."],
+  ["Advisory Council", "Subject-matter experts and strategic partners providing technical expertise and networking support on a voluntary basis."],
+  ["Thematic Units", "Specialized units delivering CAIR's substantive work across diplomacy, trade, peace, education, and research."],
+];
+
 export default function About() {
   return (
     <>
@@ -67,6 +75,33 @@ export default function About() {
                 <div className="text-xs font-medium text-[var(--gold)]">0{i + 1}</div>
                 <div className="mt-1 font-display text-xl text-[var(--forest-deep)]">{t}</div>
                 <p className="mt-2 text-sm text-foreground/70">{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section className="border-t border-border">
+        <div className="grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <span className="eyebrow">Governance</span>
+            <h2 className="mt-4 font-display text-4xl text-[var(--forest-deep)]">
+              Five organs. One mandate.
+            </h2>
+            <p className="mt-5 text-foreground/75">
+              CAIR is governed through a structure designed for accountability,
+              inclusivity, and strategic clarity — anchored in transparency and
+              the principles of the Constitution.
+            </p>
+          </div>
+          <div className="md:col-span-8 space-y-px bg-border">
+            {ORGANS.map(([t, d], i) => (
+              <div key={t} className="bg-background p-6">
+                <div className="flex items-baseline gap-3">
+                  <span className="font-display text-lg text-[var(--gold)]">0{i + 1}</span>
+                  <h3 className="font-display text-xl text-[var(--forest-deep)]">{t}</h3>
+                </div>
+                <p className="mt-2 text-sm text-foreground/75">{d}</p>
               </div>
             ))}
           </div>

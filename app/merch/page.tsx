@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader, Section } from "@/components/PageHeader";
-import { MerchItem, type MerchItemData } from "@/components/sections/MerchItem";
+import { MerchItem } from "@/components/sections/MerchItem";
+import { getAvailableMerchItems } from "@/lib/services/merch";
 
 export const metadata: Metadata = {
   title: "Merch",
@@ -12,19 +13,9 @@ export const metadata: Metadata = {
   },
 };
 
-const ITEMS: MerchItemData[] = [
-  { slug: "heritage-polo-ivory", name: "Heritage Polo — Ivory", category: "Apparel · Polo", categoryLabel: "Polo", image: "/images/merch/polo-ivory.jpg" },
-  { slug: "continental-polo-teal", name: "Continental Polo — Teal", category: "Apparel · Polo", categoryLabel: "Polo", image: "/images/merch/polo-teal.jpg" },
-  { slug: "diplomat-polo-navy", name: "Diplomat Polo — Navy", category: "Apparel · Polo", categoryLabel: "Polo", image: "/images/merch/polo-navy.jpg" },
-  { slug: "contrast-polo-ivory-teal", name: "Contrast Polo — Ivory / Teal", category: "Apparel · Polo", categoryLabel: "Polo", image: "/images/merch/polo-ivory-teal.jpg" },
-  { slug: "contrast-polo-navy-teal", name: "Contrast Polo — Navy / Teal", category: "Apparel · Polo", categoryLabel: "Polo", image: "/images/merch/polo-navy-teal.jpg" },
-  { slug: "signature-tote-teal", name: "Signature Tote — Teal", category: "Accessories · Tote", categoryLabel: "Tote", image: "/images/merch/tote-teal.jpg" },
-  { slug: "signature-tote-navy", name: "Signature Tote — Navy", category: "Accessories · Tote", categoryLabel: "Tote", image: "/images/merch/tote-navy.jpg" },
-  { slug: "field-cap-teal", name: "Field Cap — Teal", category: "Headwear · Cap", categoryLabel: "Cap", image: "/images/merch/cap-teal.jpg" },
-  { slug: "field-cap-stone", name: "Field Cap — Stone", category: "Headwear · Cap", categoryLabel: "Cap", image: "/images/merch/cap-stone.jpg" },
-];
+export default async function MerchPage() {
+  const items = await getAvailableMerchItems();
 
-export default function MerchPage() {
   return (
     <>
       <PageHeader
@@ -35,8 +26,16 @@ export default function MerchPage() {
 
       <Section>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {ITEMS.map((item) => (
-            <MerchItem key={item.slug} item={item} />
+          {items.map((item) => (
+            <MerchItem
+              key={item.id}
+              item={{
+                slug: item.slug,
+                name: item.name,
+                category: item.category,
+                image: item.image_url[0] ?? "/images/merch/polo-ivory.jpg",
+              }}
+            />
           ))}
         </div>
       </Section>

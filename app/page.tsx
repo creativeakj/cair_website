@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Handshake, TrendingUp, ShieldCheck, GraduationCap, BookOpen } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -11,6 +18,34 @@ export const metadata: Metadata = {
     description: "Advancing peace, prosperity, and shared global values between Africa and America.",
   },
 };
+
+const PILLARS = [
+  {
+    icon: Handshake,
+    title: "Diplomacy & Governance",
+    desc: "Convening heads of mission, parliamentarians, and policy makers to strengthen democratic institutions.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Trade & Investment",
+    desc: "Opening pathways for inclusive commerce and capital flows across African and American markets.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Peace & Security",
+    desc: "Supporting conflict prevention, post-conflict recovery, and regional stability across the Atlantic basin.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Education & Exchange",
+    desc: "Advancing scholarly mobility, cultural understanding, and shared educational programs.",
+  },
+  {
+    icon: BookOpen,
+    title: "Research & Policy",
+    desc: "Producing independent, evidence-led analysis to inform decision makers and the public.",
+  },
+] as const;
 
 const PLACES = [
   { src: "/images/place-kilimanjaro.jpg", name: "Mount Kilimanjaro", country: "Tanzania", h: "md:mt-10" },
@@ -76,6 +111,16 @@ export default function Home() {
             <h2 className="mt-4 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
               A leading hub for African–American cooperation.
             </h2>
+            <p className="mt-5 text-foreground/70">
+              Five thematic units translate that vision into research, convenings,
+              and partnerships on the ground.
+            </p>
+            <Link
+              href="/programs"
+              className="mt-6 inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
+            >
+              See all programs →
+            </Link>
           </div>
           <div className="md:col-span-8 md:pt-3">
             <p className="text-lg leading-relaxed text-foreground/80">
@@ -84,15 +129,11 @@ export default function Home() {
               through diplomatic engagement, trade promotion, research, leadership
               development, and cultural exchange.
             </p>
-            <div className="mt-10 grid gap-6 sm:grid-cols-2">
-              {[
-                ["Diplomacy", "Convening leaders and policy makers across continents."],
-                ["Trade & Investment", "Opening pathways for sustainable economic growth."],
-                ["Research & Policy", "Independent, evidence-led analysis."],
-                ["Capacity & Exchange", "Building leadership, education, and cultural bridges."],
-              ].map(([title, desc]) => (
+            <div className="mt-10 grid gap-8 sm:grid-cols-2">
+              {PILLARS.map(({ icon: Icon, title, desc }) => (
                 <div key={title} className="border-t border-[var(--gold)]/60 pt-4">
-                  <div className="font-display text-xl text-[var(--forest-deep)]">{title}</div>
+                  <Icon className="h-6 w-6 text-[var(--accent)]" strokeWidth={1.5} />
+                  <div className="mt-3 font-display text-xl text-[var(--forest-deep)]">{title}</div>
                   <p className="mt-2 text-sm text-foreground/70">{desc}</p>
                 </div>
               ))}
@@ -122,6 +163,22 @@ export default function Home() {
               Explore our programs →
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* LEADERSHIP QUOTE */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-4xl px-6 py-20 text-center">
+          <span className="gold-rule mx-auto mb-6 block" />
+          <blockquote className="font-display text-2xl leading-snug text-[var(--forest-deep)] md:text-3xl">
+            &ldquo;CAIR exists because the relationship between Africa and America
+            deserves institutions, not just conversations — bodies that convene,
+            research, and hold the work together long after the headlines move on.&rdquo;
+          </blockquote>
+          <div className="mt-6 text-sm font-medium uppercase tracking-[0.16em] text-[var(--gold)]">
+            Olatunbosun Williams
+          </div>
+          <div className="text-sm text-foreground/60">Chairman &amp; President, CAIR</div>
         </div>
       </section>
 
@@ -168,12 +225,19 @@ export default function Home() {
 
       {/* STATS */}
       <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="grid gap-10 border-y border-border py-12 md:grid-cols-4">
+        <div className="mb-12 max-w-2xl">
+          <span className="eyebrow">By the Numbers</span>
+          <h2 className="mt-4 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+            An institution built for the long term.
+          </h2>
+        </div>
+        <div className="grid gap-10 border-y border-border py-12 sm:grid-cols-2 md:grid-cols-5">
           {[
-            ["2", "Headquarters", "Washington D.C. · Abuja"],
-            ["5", "Thematic Units", "Diplomacy to Climate"],
+            ["2", "Headquarters", "Lansing, MI · Abuja"],
+            ["5", "Thematic Units", "Diplomacy to Research"],
             ["40%+", "Women & Youth", "Board representation"],
-            ["∞", "Global Network", "Africa · America · Allies"],
+            ["7+", "Countries", "Represented on our council"],
+            ["3-yr", "Board Terms", "Renewable under the Constitution"],
           ].map(([n, t, d]) => (
             <div key={t}>
               <div className="font-display text-5xl text-[var(--forest-deep)]">{n}</div>
@@ -182,6 +246,128 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* LEADERSHIP STRIP */}
+      <section className="bg-[var(--secondary)]">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="eyebrow">Leadership</span>
+              <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+                The officers of the Center
+              </h2>
+            </div>
+            <Link
+              href="/team"
+              className="inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
+            >
+              Meet the full team →
+            </Link>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-4">
+            {[
+              ["OW", "Olatunbosun Williams", "Chairman & President"],
+              ["EO", "Dr. Echo Emmanuel Ogbenjuwa", "Vice Chairman"],
+              ["EO", "Mrs. Echo Mary Ocholongwa", "Secretary"],
+              ["OW", "Ambassador Omolara Williams", "Treasurer"],
+            ].map(([initials, name, role]) => (
+              <div key={name} className="bg-background p-6">
+                <div className="grid h-12 w-12 place-items-center rounded-full bg-[var(--forest-deep)] font-display text-lg text-[var(--primary-foreground)]">
+                  {initials}
+                </div>
+                <div className="mt-4 font-display text-lg text-[var(--forest-deep)]">{name}</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{role}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PARTNERS */}
+      <section className="bg-[var(--forest-deep)]">
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="eyebrow mb-8 text-center text-[var(--gold)] md:text-left">
+            In collaboration with
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
+            <div className="flex items-center gap-3 rounded-sm bg-white/95 px-5 py-3">
+              <Image src="/images/partners/tum-logo.jpg" alt="The Unifiers Movement (TUM)" width={40} height={40} className="h-10 w-10 object-contain" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--forest-deep)]">
+                The Unifiers Movement
+              </span>
+            </div>
+            <div className="flex items-center gap-3 rounded-sm bg-white/95 px-5 py-3">
+              <Image src="/images/partners/gaba-logo.jpg" alt="GABA Foundation" width={40} height={40} className="h-10 w-10 object-contain" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--forest-deep)]">
+                GABA Foundation
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="mx-auto max-w-4xl px-6 py-24">
+        <div className="mb-10">
+          <span className="eyebrow">Frequently Asked</span>
+          <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+            Common questions about CAIR
+          </h2>
+        </div>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="affiliation">
+            <AccordionTrigger className="font-display text-lg text-[var(--forest-deep)]">
+              Is CAIR affiliated with any government?
+            </AccordionTrigger>
+            <AccordionContent className="text-foreground/75">
+              No. CAIR is a non-governmental, non-profit, non-partisan organization,
+              registered independently in the United States and the Federal Republic
+              of Nigeria. It does not represent or receive direction from any
+              government or political party.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="funding">
+            <AccordionTrigger className="font-display text-lg text-[var(--forest-deep)]">
+              How is CAIR funded?
+            </AccordionTrigger>
+            <AccordionContent className="text-foreground/75">
+              As a non-profit, CAIR is funded through membership dues, institutional
+              partnerships, and program-specific grants. All proceeds are applied to
+              the Center&apos;s mission and objectives — there is no private benefit,
+              and finances are subject to an independent annual audit presented to
+              the General Assembly.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="partner">
+            <AccordionTrigger className="font-display text-lg text-[var(--forest-deep)]">
+              How can my organization partner with CAIR?
+            </AccordionTrigger>
+            <AccordionContent className="text-foreground/75">
+              Institutions can engage as institutional members, event co-conveners,
+              or research partners. Reach out through the{" "}
+              <Link href="/contact" className="underline underline-offset-2 hover:text-[var(--forest-deep)]">
+                Contact
+              </Link>{" "}
+              page and the Executive Secretariat will route your inquiry to the
+              relevant thematic unit.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="membership">
+            <AccordionTrigger className="font-display text-lg text-[var(--forest-deep)]">
+              How do I become a member?
+            </AccordionTrigger>
+            <AccordionContent className="text-foreground/75">
+              CAIR offers institutional, individual, associate, and honorary
+              membership categories. Visit the{" "}
+              <Link href="/membership" className="underline underline-offset-2 hover:text-[var(--forest-deep)]">
+                Membership
+              </Link>{" "}
+              page for details on each tier, then contact the Executive
+              Secretariat to request an application.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </section>
 
       {/* CTA */}
