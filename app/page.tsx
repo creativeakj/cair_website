@@ -54,9 +54,38 @@ const PLACES = [
   { src: "/images/place-marrakech.jpg", name: "Marrakech", country: "Morocco", h: "md:mt-4" },
 ];
 
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Center for African International Relations",
+  alternateName: "CAIR",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  description:
+    "A non-governmental, non-profit, non-partisan center advancing dialogue, research, and partnership between Africa and America.",
+  address: [
+    {
+      "@type": "PostalAddress",
+      streetAddress: "713 North Chestnut Street",
+      addressLocality: "Lansing",
+      addressRegion: "MI",
+      postalCode: "48906",
+      addressCountry: "US",
+    },
+    {
+      "@type": "PostalAddress",
+      addressLocality: "Abuja",
+      addressCountry: "NG",
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
+      />
       {/* HERO */}
       <section className="relative isolate overflow-hidden">
         <Image

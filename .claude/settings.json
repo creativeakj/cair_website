@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node -e ' *)",
       "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *next start*\")",
-      "Bash(pkill -f \"next start\")"
+      "Bash(pkill -f \"next start\")",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

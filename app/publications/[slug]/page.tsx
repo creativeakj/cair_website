@@ -1,0 +1,98 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { PageHeader, Section } from "@/components/PageHeader";
+import { ShareButtons } from "@/components/sections/ShareButtons";
+import { RelatedItems } from "@/components/sections/RelatedItems";
+import { PublicationDownloadButton } from "@/components/sections/PublicationDownloadButton";
+import { getPublicationBySlug, getPublications, getRelatedPublications } from "@/lib/services/publications";
+
+export async function generateStaticParams() {
+  const publications = await getPublications();
+  return publications.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const publication = await getPublicationBySlug(slug);
+  if (!publication) return {};
+
+  return {
+    title: publication.title,
+    description: publication.summary,
+    openGraph: {
+      title: publication.title,
+      description: publication.summary,
+      type: "article",
+    },
+  };
+}
+
+export default async function PublicationDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const publication = await getPublicationBySlug(slug);
+  if (!publication) notFound();
+
+  const related = await getRelatedPublications(slug, publication.category);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const url = `${siteUrl}/publications/${slug}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Report",
+    name: publication.title,
+    author: publication.authors.map((name) => ({ "@type": "Person", name })),
+    datePublished: publication.published_date,
+    url,
+    description: publication.summary,
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PageHeader
+        eyebrow={`${publication.category} · ${new Date(publication.published_date).getFullYear()}`}
+        title={publication.title}
+        lede={publication.summary}
+      />
+      <Section className="max-w-4xl">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-8">
+          <div className="text-sm text-foreground/70">
+            <span className="font-medium text-[var(--forest-deep)]">{publication.authors.join(", ")}</span>
+            <span className="mx-2">·</span>
+            {new Date(publication.published_date).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </div>
+          <ShareButtons url={url} title={publication.title} />
+        </div>
+
+        <p className="text-lg leading-relaxed text-foreground/80">{publication.abstract}</p>
+
+        <div className="mt-10">
+          <PublicationDownloadButton slug={publication.slug} fileUrl={publication.file_url} />
+        </div>
+
+        <div className="mt-16">
+          <RelatedItems
+            heading="Related Publications"
+            basePath="/publications"
+            items={related.map((p) => ({ slug: p.slug, title: p.title, meta: p.category }))}
+          />
+        </div>
+      </Section>
+    </>
+  );
+}

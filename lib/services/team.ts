@@ -17,3 +17,19 @@ export async function getActiveTeamMembers(): Promise<TeamMemberDTO[]> {
 
   return docs.map(({ _id, ...rest }) => ({ id: _id!.toString(), ...rest }));
 }
+
+export async function getTeamMemberById(id: string): Promise<TeamMemberDTO | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("team");
+
+  const { ObjectId } = await import("mongodb");
+  if (!ObjectId.isValid(id)) return null;
+
+  const collection = await teamMembersCollection();
+  const doc = await collection.findOne({ _id: new ObjectId(id) });
+  if (!doc) return null;
+
+  const { _id, ...rest } = doc;
+  return { id: _id!.toString(), ...rest };
+}
