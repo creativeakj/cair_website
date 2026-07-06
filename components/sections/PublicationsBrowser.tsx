@@ -31,6 +31,10 @@ export function PublicationsBrowser({ publications }: { publications: Publicatio
 
   const featured = publications.find((p) => p.is_featured);
 
+  if (publications.length === 0) {
+    return <p className="py-6 text-center text-sm text-muted-foreground">No publications yet. Check back soon.</p>;
+  }
+
   return (
     <div>
       <div className="mb-10 flex flex-wrap gap-4">
@@ -77,11 +81,7 @@ export function PublicationsBrowser({ publications }: { publications: Publicatio
       )}
 
       {filtered.length === 0 ? (
-        <p className="py-16 text-center text-sm text-muted-foreground">
-          {publications.length === 0
-            ? "No publications yet. Check back soon."
-            : "No publications match those filters."}
-        </p>
+        <p className="py-16 text-center text-sm text-muted-foreground">No publications match those filters.</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => (

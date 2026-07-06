@@ -26,6 +26,10 @@ export function NewsBrowser({ articles }: { articles: NewsArticleDTO[] }) {
     return true;
   });
 
+  if (articles.length === 0) {
+    return <p className="py-6 text-center text-sm text-muted-foreground">No news articles yet. Check back soon.</p>;
+  }
+
   return (
     <div>
       <div className="mb-10 flex flex-wrap gap-4">
@@ -48,9 +52,7 @@ export function NewsBrowser({ articles }: { articles: NewsArticleDTO[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="py-16 text-center text-sm text-muted-foreground">
-          {articles.length === 0 ? "No news articles yet. Check back soon." : "No articles match your search."}
-        </p>
+        <p className="py-16 text-center text-sm text-muted-foreground">No articles match your search.</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((a) => (
