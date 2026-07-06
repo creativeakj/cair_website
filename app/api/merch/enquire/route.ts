@@ -3,6 +3,7 @@ import { z } from "zod";
 import { merchEnquirySchema } from "@/lib/validation/merch";
 import { sendEmail, internalNotificationAddress } from "@/lib/email";
 import { MerchEnquiryNotification } from "@/lib/email-templates/MerchEnquiryNotification";
+import { MerchEnquiryAcknowledgement } from "@/lib/email-templates/MerchEnquiryAcknowledgement";
 import { recordMerchEnquiry } from "@/lib/services/merch-enquiries";
 
 export async function POST(request: Request) {
@@ -31,14 +32,21 @@ export async function POST(request: Request) {
   }
 
   try {
-    await sendEmail({
-      to: internalNotificationAddress(),
-      subject: `Merch enquiry: ${product_name}`,
-      react: MerchEnquiryNotification({ productName: product_name, name, email, message }),
-    });
+    await Promise.all([
+      sendEmail({
+        to: internalNotificationAddress(),
+        subject: `Merch enquiry: ${product_name}`,
+        react: MerchEnquiryNotification({ productName: product_name, name, email, message }),
+      }),
+      sendEmail({
+        to: email,
+        subject: "We've received your enquiry — CAIR",
+        react: MerchEnquiryAcknowledgement({ name, productName: product_name }),
+      }),
+    ]);
   } catch (error) {
-    // The enquiry is already saved; a failed notification email shouldn't fail the request.
-    console.error("[merch/enquire] failed to send notification email:", error);
+    // The enquiry is already saved; a failed email shouldn't fail the request.
+    console.error("[merch/enquire] failed to send emails:", error);
   }
 
   return NextResponse.json({ success: true });

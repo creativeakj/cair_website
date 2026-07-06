@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { subscribeSchema } from "@/lib/validation/subscribe";
 import { subscribersCollection } from "@/lib/db/collections";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, internalNotificationAddress } from "@/lib/email";
 import { NewsletterWelcome } from "@/lib/email-templates/NewsletterWelcome";
+import { SubscriberNotification } from "@/lib/email-templates/SubscriberNotification";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -49,14 +50,21 @@ export async function POST(request: Request) {
   if (isNewSubscriber) {
     try {
       const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-      await sendEmail({
-        to: email,
-        subject: "Welcome to CAIR",
-        react: NewsletterWelcome({ siteUrl }),
-      });
+      await Promise.all([
+        sendEmail({
+          to: email,
+          subject: "Welcome to CAIR",
+          react: NewsletterWelcome({ siteUrl }),
+        }),
+        sendEmail({
+          to: internalNotificationAddress(),
+          subject: `New newsletter subscriber: ${email}`,
+          react: SubscriberNotification({ email, source }),
+        }),
+      ]);
     } catch (error) {
-      // The subscriber is already saved; a failed welcome email shouldn't fail the request.
-      console.error("[subscribe] failed to send welcome email:", error);
+      // The subscriber is already saved; a failed email shouldn't fail the request.
+      console.error("[subscribe] failed to send emails:", error);
     }
   }
 
