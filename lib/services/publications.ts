@@ -1,6 +1,7 @@
-import { cacheLife, cacheTag, revalidateTag } from "next/cache";
+import { cacheLife, cacheTag, revalidateTag, updateTag } from "next/cache";
+import { ObjectId } from "mongodb";
 import { publicationsCollection } from "@/lib/db/collections";
-import type { Publication } from "@/types/publication";
+import type { Publication, PublicationCategory } from "@/types/publication";
 
 export type PublicationDTO = Omit<Publication, "_id" | "published_date" | "created_at"> & {
   id: string;
@@ -69,4 +70,54 @@ export async function incrementDownloadCount(slug: string): Promise<boolean> {
     return true;
   }
   return false;
+}
+
+export async function getPublicationById(id: string): Promise<PublicationDTO | null> {
+  if (!ObjectId.isValid(id)) return null;
+  const collection = await publicationsCollection();
+  const doc = await collection.findOne({ _id: new ObjectId(id) });
+  return doc ? toDTO(doc) : null;
+}
+
+export type PublicationInput = {
+  slug: string;
+  title: string;
+  summary: string;
+  abstract: string;
+  authors: string[];
+  category: PublicationCategory;
+  file_url: string;
+  cover_image_url?: string;
+  published_date: string;
+  year: number;
+  is_featured: boolean;
+};
+
+export async function createPublication(input: PublicationInput): Promise<string> {
+  const collection = await publicationsCollection();
+  const result = await collection.insertOne({
+    ...input,
+    published_date: new Date(input.published_date),
+    download_count: 0,
+    created_at: new Date(),
+  });
+  updateTag("publications");
+  return result.insertedId.toString();
+}
+
+export async function updatePublication(id: string, input: PublicationInput): Promise<boolean> {
+  const collection = await publicationsCollection();
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { ...input, published_date: new Date(input.published_date) } },
+  );
+  updateTag("publications");
+  return result.matchedCount > 0;
+}
+
+export async function deletePublication(id: string): Promise<boolean> {
+  const collection = await publicationsCollection();
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  updateTag("publications");
+  return result.deletedCount > 0;
 }

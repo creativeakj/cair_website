@@ -1,6 +1,8 @@
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife, cacheTag, updateTag } from "next/cache";
+import { connection } from "next/server";
+import { ObjectId } from "mongodb";
 import { newsArticlesCollection } from "@/lib/db/collections";
-import type { NewsArticle } from "@/types/news-article";
+import type { NewsArticle, NewsArticleStatus } from "@/types/news-article";
 
 export type NewsArticleDTO = Omit<NewsArticle, "_id" | "author_id" | "published_at" | "created_at" | "updated_at"> & {
   id: string;
@@ -72,4 +74,73 @@ export async function getRelatedNewsArticles(slug: string, category: string, lim
     .limit(limit)
     .toArray();
   return docs.map(toDTO);
+}
+
+export async function getAllNewsArticlesAdmin(): Promise<NewsArticleDTO[]> {
+  await connection();
+  const collection = await newsArticlesCollection();
+  const docs = await collection.find({}).sort({ created_at: -1 }).toArray();
+  return docs.map(toDTO);
+}
+
+export async function getNewsArticleById(id: string): Promise<NewsArticleDTO | null> {
+  if (!ObjectId.isValid(id)) return null;
+  const collection = await newsArticlesCollection();
+  const doc = await collection.findOne({ _id: new ObjectId(id) });
+  return doc ? toDTO(doc) : null;
+}
+
+export type NewsArticleInput = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  body_md: string;
+  featured_image_url?: string;
+  author_id?: string;
+  category: string;
+  tags: string[];
+  status: NewsArticleStatus;
+  is_featured: boolean;
+};
+
+export async function createNewsArticle(input: NewsArticleInput): Promise<string> {
+  const collection = await newsArticlesCollection();
+  const now = new Date();
+  const result = await collection.insertOne({
+    ...input,
+    author_id: input.author_id ? new ObjectId(input.author_id) : undefined,
+    published_at: input.status === "published" ? now : undefined,
+    created_at: now,
+    updated_at: now,
+  });
+  updateTag("news");
+  return result.insertedId.toString();
+}
+
+export async function updateNewsArticle(id: string, input: NewsArticleInput): Promise<boolean> {
+  const collection = await newsArticlesCollection();
+  const existing = await collection.findOne({ _id: new ObjectId(id) });
+  const wasPublished = existing?.status === "published";
+  const willBePublished = input.status === "published";
+
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        ...input,
+        author_id: input.author_id ? new ObjectId(input.author_id) : undefined,
+        updated_at: new Date(),
+        ...(!wasPublished && willBePublished ? { published_at: new Date() } : {}),
+      },
+    },
+  );
+  updateTag("news");
+  return result.matchedCount > 0;
+}
+
+export async function deleteNewsArticle(id: string): Promise<boolean> {
+  const collection = await newsArticlesCollection();
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  updateTag("news");
+  return result.deletedCount > 0;
 }

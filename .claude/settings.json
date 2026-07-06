@@ -4,7 +4,16 @@
       "Bash(node -e ' *)",
       "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *next start*\")",
       "Bash(pkill -f \"next start\")",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/next-auth/package.json'\\).version\\)\")",
+      "Bash(curl -s -o /dev/null -w \"port 3000: %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"home: %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"login page: %{http_code}\\\\n\" http://localhost:3000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"admin \\(should redirect\\): %{http_code}\\\\n\" -L http://localhost:3000/admin)",
+      "Bash(curl -s -o /dev/null -w \"unauth admin no-follow: %{http_code}\\\\n\" http://localhost:3000/admin)",
+      "Bash(curl -s -D - -o /dev/null http://localhost:3000/admin)",
+      "Bash(curl -s http://localhost:3000/admin)"
     ]
   }
 }

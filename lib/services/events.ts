@@ -1,6 +1,7 @@
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife, cacheTag, updateTag } from "next/cache";
+import { ObjectId } from "mongodb";
 import { eventsCollection } from "@/lib/db/collections";
-import type { CairEvent } from "@/types/event";
+import type { CairEvent, EventFormat, EventStatus } from "@/types/event";
 
 export type EventDTO = Omit<CairEvent, "_id" | "event_date" | "end_date" | "created_at"> & {
   id: string;
@@ -39,4 +40,61 @@ export async function getEventBySlug(slug: string): Promise<EventDTO | null> {
   const collection = await eventsCollection();
   const doc = await collection.findOne({ slug });
   return doc ? toDTO(doc) : null;
+}
+
+export async function getEventById(id: string): Promise<EventDTO | null> {
+  if (!ObjectId.isValid(id)) return null;
+  const collection = await eventsCollection();
+  const doc = await collection.findOne({ _id: new ObjectId(id) });
+  return doc ? toDTO(doc) : null;
+}
+
+export type EventInput = {
+  slug: string;
+  title: string;
+  description: string;
+  event_date: string;
+  end_date?: string;
+  location: string;
+  type: EventFormat;
+  category: string;
+  status: EventStatus;
+  is_featured: boolean;
+  partner_logos: string[];
+  registration_url?: string;
+};
+
+export async function createEvent(input: EventInput): Promise<string> {
+  const collection = await eventsCollection();
+  const result = await collection.insertOne({
+    ...input,
+    event_date: new Date(input.event_date),
+    end_date: input.end_date ? new Date(input.end_date) : undefined,
+    created_at: new Date(),
+  });
+  updateTag("events");
+  return result.insertedId.toString();
+}
+
+export async function updateEvent(id: string, input: EventInput): Promise<boolean> {
+  const collection = await eventsCollection();
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        ...input,
+        event_date: new Date(input.event_date),
+        end_date: input.end_date ? new Date(input.end_date) : undefined,
+      },
+    },
+  );
+  updateTag("events");
+  return result.matchedCount > 0;
+}
+
+export async function deleteEvent(id: string): Promise<boolean> {
+  const collection = await eventsCollection();
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  updateTag("events");
+  return result.deletedCount > 0;
 }

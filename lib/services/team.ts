@@ -1,4 +1,6 @@
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife, cacheTag, updateTag } from "next/cache";
+import { connection } from "next/server";
+import { ObjectId } from "mongodb";
 import { teamMembersCollection } from "@/lib/db/collections";
 import type { TeamMember } from "@/types/team-member";
 
@@ -23,7 +25,6 @@ export async function getTeamMemberById(id: string): Promise<TeamMemberDTO | nul
   cacheLife("hours");
   cacheTag("team");
 
-  const { ObjectId } = await import("mongodb");
   if (!ObjectId.isValid(id)) return null;
 
   const collection = await teamMembersCollection();
@@ -32,4 +33,43 @@ export async function getTeamMemberById(id: string): Promise<TeamMemberDTO | nul
 
   const { _id, ...rest } = doc;
   return { id: _id!.toString(), ...rest };
+}
+
+export async function getAllTeamMembersAdmin(): Promise<TeamMemberDTO[]> {
+  await connection();
+  const collection = await teamMembersCollection();
+  const docs = await collection.find({}).sort({ display_order: 1 }).toArray();
+  return docs.map(({ _id, ...rest }) => ({ id: _id!.toString(), ...rest }));
+}
+
+export type TeamMemberInput = {
+  slug: string;
+  name: string;
+  title: string;
+  department: string;
+  bio: string;
+  photo_url?: string;
+  display_order: number;
+  is_active: boolean;
+};
+
+export async function createTeamMember(input: TeamMemberInput): Promise<string> {
+  const collection = await teamMembersCollection();
+  const result = await collection.insertOne({ ...input });
+  updateTag("team");
+  return result.insertedId.toString();
+}
+
+export async function updateTeamMember(id: string, input: TeamMemberInput): Promise<boolean> {
+  const collection = await teamMembersCollection();
+  const result = await collection.updateOne({ _id: new ObjectId(id) }, { $set: input });
+  updateTag("team");
+  return result.matchedCount > 0;
+}
+
+export async function deleteTeamMember(id: string): Promise<boolean> {
+  const collection = await teamMembersCollection();
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  updateTag("team");
+  return result.deletedCount > 0;
 }
