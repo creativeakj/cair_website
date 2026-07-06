@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/admin/FileUpload";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { TagsInput } from "@/components/admin/TagsInput";
 import { newsArticleSchema, type NewsArticleFormValues } from "@/lib/validation/news-article";
 import { createNewsArticleAction, updateNewsArticleAction } from "@/app/admin/(dashboard)/news/actions";
 import type { NewsArticleDTO } from "@/lib/services/news";
@@ -222,12 +223,7 @@ export function NewsArticleFormDialog({
                 <FormItem>
                   <FormLabel>Tags (comma-separated)</FormLabel>
                   <FormControl>
-                    <Input
-                      value={field.value.join(", ")}
-                      onChange={(e) =>
-                        field.onChange(e.target.value.split(",").map((s) => s.trim()).filter(Boolean))
-                      }
-                    />
+                    <TagsInput value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

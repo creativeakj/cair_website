@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyle } from "@tiptap/extension-text-style";
@@ -78,6 +78,8 @@ export function RichTextEditor({
   placeholder?: string;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [linkEditorOpen, setLinkEditorOpen] = useState(false);
+  const [linkDraft, setLinkDraft] = useState("");
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -170,11 +172,10 @@ export function RichTextEditor({
 
         <ToolbarButton
           label="Link"
-          active={editor.isActive("link")}
+          active={editor.isActive("link") || linkEditorOpen}
           onClick={() => {
-            const url = window.prompt("Link URL");
-            if (url) editor.chain().focus().setLink({ href: url }).run();
-            else editor.chain().focus().unsetLink().run();
+            setLinkDraft(editor.getAttributes("link").href ?? "");
+            setLinkEditorOpen((open) => !open);
           }}
         >
           <Link2 className="h-4 w-4" />
@@ -235,7 +236,64 @@ export function RichTextEditor({
           </button>
         </div>
       </div>
+
+      {linkEditorOpen && (
+        <div className="flex items-center gap-2 border-x border-b border-input bg-[var(--secondary)] p-2">
+          <input
+            type="url"
+            autoFocus
+            value={linkDraft}
+            onChange={(e) => setLinkDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                applyLink();
+              } else if (e.key === "Escape") {
+                setLinkEditorOpen(false);
+              }
+            }}
+            placeholder="https://example.com"
+            className="h-8 flex-1 rounded-sm border border-input bg-background px-2 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          />
+          <button
+            type="button"
+            onClick={applyLink}
+            className="h-8 rounded-sm bg-primary px-3 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            Apply
+          </button>
+          {editor.isActive("link") && (
+            <button
+              type="button"
+              onClick={() => {
+                editor.chain().focus().unsetLink().run();
+                setLinkEditorOpen(false);
+              }}
+              className="h-8 rounded-sm border border-input px-3 text-xs text-foreground/70 hover:bg-accent"
+            >
+              Remove
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setLinkEditorOpen(false)}
+            className="h-8 rounded-sm px-3 text-xs text-foreground/60 hover:bg-accent"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
       <EditorContent editor={editor} />
     </div>
   );
+
+  function applyLink() {
+    if (linkDraft.trim()) {
+      editor?.chain().focus().extendMarkRange("link").setLink({ href: linkDraft.trim() }).run();
+    } else {
+      editor?.chain().focus().unsetLink().run();
+    }
+    setLinkEditorOpen(false);
+  }
 }

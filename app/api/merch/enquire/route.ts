@@ -23,14 +23,23 @@ export async function POST(request: Request) {
 
   const { product_slug, product_name, name, email, message } = parsed.data;
 
-  await Promise.all([
-    recordMerchEnquiry({ product_slug, product_name, name, email, message }),
-    sendEmail({
+  try {
+    await recordMerchEnquiry({ product_slug, product_name, name, email, message });
+  } catch (error) {
+    console.error("[merch/enquire] failed to record enquiry:", error);
+    return NextResponse.json({ success: false, error: "Could not save enquiry" }, { status: 500 });
+  }
+
+  try {
+    await sendEmail({
       to: internalNotificationAddress(),
       subject: `Merch enquiry: ${product_name}`,
       react: MerchEnquiryNotification({ productName: product_name, name, email, message }),
-    }),
-  ]);
+    });
+  } catch (error) {
+    // The enquiry is already saved; a failed notification email shouldn't fail the request.
+    console.error("[merch/enquire] failed to send notification email:", error);
+  }
 
   return NextResponse.json({ success: true });
 }
