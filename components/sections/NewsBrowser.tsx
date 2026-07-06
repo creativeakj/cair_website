@@ -48,7 +48,9 @@ export function NewsBrowser({ articles }: { articles: NewsArticleDTO[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="py-16 text-center text-sm text-muted-foreground">No articles match your search.</p>
+        <p className="py-16 text-center text-sm text-muted-foreground">
+          {articles.length === 0 ? "No news articles yet. Check back soon." : "No articles match your search."}
+        </p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((a) => (

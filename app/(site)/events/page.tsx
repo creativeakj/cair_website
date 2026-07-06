@@ -78,11 +78,18 @@ export default async function EventsPage() {
           <h2 className="font-display text-3xl text-[var(--forest-deep)] md:text-4xl">Upcoming</h2>
           <span className="text-sm text-muted-foreground">{upcoming.length} scheduled</span>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {upcoming.map((e) => (
-            <EventCard key={e.id} event={e} />
-          ))}
-        </div>
+        {upcoming.length === 0 ? (
+          <p className="py-16 text-center text-sm text-muted-foreground">
+            No upcoming events at this time. Check back soon
+            {past.length > 0 ? " — browse past convenings below." : "."}
+          </p>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2">
+            {upcoming.map((e) => (
+              <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        )}
       </Section>
 
       {past.length > 0 && (

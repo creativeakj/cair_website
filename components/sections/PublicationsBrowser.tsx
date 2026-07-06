@@ -78,7 +78,9 @@ export function PublicationsBrowser({ publications }: { publications: Publicatio
 
       {filtered.length === 0 ? (
         <p className="py-16 text-center text-sm text-muted-foreground">
-          No publications match those filters.
+          {publications.length === 0
+            ? "No publications yet. Check back soon."
+            : "No publications match those filters."}
         </p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
