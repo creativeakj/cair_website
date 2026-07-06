@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { ArticleBody } from "@/components/sections/ArticleBody";
 import { ShareButtons } from "@/components/sections/ShareButtons";
@@ -28,6 +29,7 @@ export async function generateMetadata({
       title: publication.title,
       description: publication.summary,
       type: "article",
+      images: publication.cover_image_url ? [publication.cover_image_url] : undefined,
     },
   };
 }
@@ -66,6 +68,11 @@ export default async function PublicationDetailPage({
         title={publication.title}
         lede={publication.summary}
       />
+      {publication.cover_image_url && (
+        <div className="relative aspect-[21/9] w-full overflow-hidden">
+          <Image src={publication.cover_image_url} alt={publication.title} fill sizes="100vw" priority className="object-cover" />
+        </div>
+      )}
       <Section className="max-w-4xl">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-8">
           <div className="text-sm text-foreground/70">

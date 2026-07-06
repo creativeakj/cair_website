@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import type { PublicationDTO } from "@/lib/services/publications";
 
@@ -10,6 +11,17 @@ export function PublicationCard({ publication }: { publication: PublicationDTO }
       href={`/publications/${publication.slug}`}
       className="group flex flex-col overflow-hidden rounded-sm border border-border bg-card transition-colors hover:border-[var(--accent)]"
     >
+      {publication.cover_image_url && (
+        <div className="relative aspect-[16/9] w-full overflow-hidden">
+          <Image
+            src={publication.cover_image_url}
+            alt={publication.title}
+            fill
+            sizes="(min-width: 768px) 33vw, 100vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+      )}
       <div className="flex items-center justify-between gap-3 border-b border-border bg-[var(--secondary)] p-5">
         <Badge variant="outline" className="border-[var(--gold)] text-[var(--forest-deep)]">
           {publication.category}
