@@ -24,29 +24,39 @@ export async function POST(request: Request) {
 
   const { name, email, subject, message, source_page } = parsed.data;
 
-  const contacts = await contactsCollection();
-  await contacts.insertOne({
-    name,
-    email,
-    subject,
-    message,
-    source_page,
-    created_at: new Date(),
-    is_read: false,
-  });
+  try {
+    const contacts = await contactsCollection();
+    await contacts.insertOne({
+      name,
+      email,
+      subject,
+      message,
+      source_page,
+      created_at: new Date(),
+      is_read: false,
+    });
+  } catch (error) {
+    console.error("[contact] failed to record submission:", error);
+    return NextResponse.json({ success: false, error: "Could not send your message" }, { status: 500 });
+  }
 
-  await Promise.all([
-    sendEmail({
-      to: email,
-      subject: "We've received your message — CAIR",
-      react: ContactAcknowledgement({ name }),
-    }),
-    sendEmail({
-      to: internalNotificationAddress(),
-      subject: `New contact form submission: ${subject}`,
-      react: ContactNotification({ name, email, subject, message, sourcePage: source_page }),
-    }),
-  ]);
+  try {
+    await Promise.all([
+      sendEmail({
+        to: email,
+        subject: "We've received your message — CAIR",
+        react: ContactAcknowledgement({ name }),
+      }),
+      sendEmail({
+        to: internalNotificationAddress(),
+        subject: `New contact form submission: ${subject}`,
+        react: ContactNotification({ name, email, subject, message, sourcePage: source_page }),
+      }),
+    ]);
+  } catch (error) {
+    // The submission is already saved; a failed email shouldn't fail the request.
+    console.error("[contact] failed to send notification emails:", error);
+  }
 
   return NextResponse.json({ success: true });
 }
