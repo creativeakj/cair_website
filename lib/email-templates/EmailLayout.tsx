@@ -15,6 +15,11 @@ const FONT_SANS =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const FONT_SERIF = "Georgia, 'Times New Roman', serif";
 
+// Hosted on Cloudinary (not the site's own domain) so the logo loads in
+// recipients' inboxes regardless of where/whether the site is deployed.
+const LOGO_URL =
+  "https://res.cloudinary.com/edlmvvfq/image/upload/w_360/v1783370762/cair/site-assets/cair-logo-email.jpg";
+
 export function EmailLayout({
   preview,
   heading,
@@ -42,7 +47,7 @@ export function EmailLayout({
             }}
           >
             <Img
-              src={`${siteUrl}/images/cair-logo.png`}
+              src={LOGO_URL}
               alt="CAIR — Center for African International Relations"
               width="180"
               height="61"
