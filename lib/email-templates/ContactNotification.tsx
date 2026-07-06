@@ -1,4 +1,4 @@
-import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import { EmailButton, EmailField, EmailLayout, EmailQuote } from "@/lib/email-templates/EmailLayout";
 
 export function ContactNotification({
   name,
@@ -14,25 +14,14 @@ export function ContactNotification({
   sourcePage: string;
 }) {
   return (
-    <Html>
-      <Head />
-      <Preview>New contact form submission from {name}</Preview>
-      <Body style={{ fontFamily: "sans-serif", backgroundColor: "#f4f4f5" }}>
-        <Container style={{ backgroundColor: "#ffffff", padding: "32px", borderRadius: "8px" }}>
-          <Heading style={{ fontSize: "20px", color: "#18213b" }}>New contact submission</Heading>
-          <Text style={{ color: "#333333" }}>
-            <strong>Name:</strong> {name}
-            <br />
-            <strong>Email:</strong> {email}
-            <br />
-            <strong>Subject:</strong> {subject}
-            <br />
-            <strong>Source page:</strong> {sourcePage}
-          </Text>
-          <Text style={{ color: "#333333", whiteSpace: "pre-wrap", lineHeight: "1.6" }}>{message}</Text>
-        </Container>
-      </Body>
-    </Html>
+    <EmailLayout preview={`New contact form submission from ${name}`} heading="New contact submission">
+      <EmailField label="Name" value={name} />
+      <EmailField label="Email" value={email} />
+      <EmailField label="Subject" value={subject} />
+      <EmailField label="Source page" value={sourcePage} />
+      <EmailQuote>{message}</EmailQuote>
+      <EmailButton href={`mailto:${email}`}>Reply to {name}</EmailButton>
+    </EmailLayout>
   );
 }
 

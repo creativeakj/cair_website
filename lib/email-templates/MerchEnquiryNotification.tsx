@@ -1,4 +1,4 @@
-import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import { EmailButton, EmailField, EmailLayout, EmailQuote } from "@/lib/email-templates/EmailLayout";
 
 export function MerchEnquiryNotification({
   productName,
@@ -12,23 +12,13 @@ export function MerchEnquiryNotification({
   message?: string;
 }) {
   return (
-    <Html>
-      <Head />
-      <Preview>New merch enquiry: {productName}</Preview>
-      <Body style={{ fontFamily: "sans-serif", backgroundColor: "#f4f4f5" }}>
-        <Container style={{ backgroundColor: "#ffffff", padding: "32px", borderRadius: "8px" }}>
-          <Heading style={{ fontSize: "20px", color: "#18213b" }}>New merch enquiry</Heading>
-          <Text style={{ color: "#333333" }}>
-            <strong>Product:</strong> {productName}
-            <br />
-            <strong>Name:</strong> {name}
-            <br />
-            <strong>Email:</strong> {email}
-          </Text>
-          {message ? <Text style={{ color: "#333333", lineHeight: "1.6" }}>{message}</Text> : null}
-        </Container>
-      </Body>
-    </Html>
+    <EmailLayout preview={`New merch enquiry: ${productName}`} heading="New merch enquiry">
+      <EmailField label="Product" value={productName} />
+      <EmailField label="Name" value={name} />
+      <EmailField label="Email" value={email} />
+      {message ? <EmailQuote>{message}</EmailQuote> : null}
+      <EmailButton href={`mailto:${email}`}>Reply to {name}</EmailButton>
+    </EmailLayout>
   );
 }
 

@@ -1,23 +1,16 @@
-import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import { EmailButton, EmailLayout, EmailParagraph } from "@/lib/email-templates/EmailLayout";
 
 export function MerchEnquiryAcknowledgement({ name, productName }: { name: string; productName: string }) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
   return (
-    <Html>
-      <Head />
-      <Preview>We&apos;ve received your enquiry about {productName}</Preview>
-      <Body style={{ fontFamily: "sans-serif", backgroundColor: "#f4f4f5" }}>
-        <Container style={{ backgroundColor: "#ffffff", padding: "32px", borderRadius: "8px" }}>
-          <Heading style={{ fontSize: "20px", color: "#18213b" }}>Thank you, {name}.</Heading>
-          <Text style={{ color: "#333333", lineHeight: "1.6" }}>
-            We&apos;ve received your enquiry about <strong>{productName}</strong> and the CAIR
-            team will follow up with you shortly.
-          </Text>
-          <Text style={{ color: "#888888", fontSize: "12px", marginTop: "24px" }}>
-            Center for African International Relations
-          </Text>
-        </Container>
-      </Body>
-    </Html>
+    <EmailLayout preview={`We've received your enquiry about ${productName}`} heading={`Thank you, ${name}.`}>
+      <EmailParagraph>
+        We&apos;ve received your enquiry about <strong>{productName}</strong> and the
+        CAIR team will follow up with you shortly.
+      </EmailParagraph>
+      <EmailButton href={`${siteUrl}/merch`}>Browse merch</EmailButton>
+    </EmailLayout>
   );
 }
 
