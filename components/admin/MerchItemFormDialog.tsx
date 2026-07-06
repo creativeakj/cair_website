@@ -16,6 +16,7 @@ import { FileUpload } from "@/components/admin/FileUpload";
 import { merchItemSchema, type MerchItemFormValues } from "@/lib/validation/merch-item";
 import { createMerchItemAction, updateMerchItemAction } from "@/app/admin/(dashboard)/merch/actions";
 import type { MerchItemDTO } from "@/lib/services/merch";
+import { slugify } from "@/lib/utils";
 
 const EMPTY: MerchItemFormValues = {
   slug: "",
@@ -38,14 +39,24 @@ export function MerchItemFormDialog({
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [slugTouched, setSlugTouched] = useState(false);
 
   const form = useForm<MerchItemFormValues>({
     resolver: zodResolver(merchItemSchema),
     defaultValues: EMPTY,
   });
 
+  const nameValue = form.watch("name");
+  useEffect(() => {
+    if (!slugTouched) {
+      form.setValue("slug", slugify(nameValue || ""), { shouldValidate: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameValue, slugTouched]);
+
   useEffect(() => {
     if (open) {
+      setSlugTouched(!!item);
       form.reset(
         item
           ? {
@@ -111,7 +122,13 @@ export function MerchItemFormDialog({
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        onChange={(e) => {
+                          setSlugTouched(true);
+                          field.onChange(e);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

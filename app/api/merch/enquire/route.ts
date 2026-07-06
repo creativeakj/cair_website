@@ -3,6 +3,7 @@ import { z } from "zod";
 import { merchEnquirySchema } from "@/lib/validation/merch";
 import { sendEmail, internalNotificationAddress } from "@/lib/email";
 import { MerchEnquiryNotification } from "@/lib/email-templates/MerchEnquiryNotification";
+import { recordMerchEnquiry } from "@/lib/services/merch-enquiries";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -20,13 +21,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const { product_name, name, email, message } = parsed.data;
+  const { product_slug, product_name, name, email, message } = parsed.data;
 
-  await sendEmail({
-    to: internalNotificationAddress(),
-    subject: `Merch enquiry: ${product_name}`,
-    react: MerchEnquiryNotification({ productName: product_name, name, email, message }),
-  });
+  await Promise.all([
+    recordMerchEnquiry({ product_slug, product_name, name, email, message }),
+    sendEmail({
+      to: internalNotificationAddress(),
+      subject: `Merch enquiry: ${product_name}`,
+      react: MerchEnquiryNotification({ productName: product_name, name, email, message }),
+    }),
+  ]);
 
   return NextResponse.json({ success: true });
 }

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { newsArticleSchema, type NewsArticleFormValues } from "@/lib/validation/news-article";
 import { createNewsArticle, updateNewsArticle, deleteNewsArticle } from "@/lib/services/news";
+import { sanitizeRichText } from "@/lib/sanitize-html";
 
 async function requireAdmin() {
   const session = await auth();
@@ -15,6 +16,7 @@ export async function createNewsArticleAction(input: NewsArticleFormValues) {
   const data = newsArticleSchema.parse(input);
   await createNewsArticle({
     ...data,
+    body_html: sanitizeRichText(data.body_html),
     featured_image_url: data.featured_image_url || undefined,
     author_id: data.author_id || undefined,
   });
@@ -26,6 +28,7 @@ export async function updateNewsArticleAction(id: string, input: NewsArticleForm
   const data = newsArticleSchema.parse(input);
   await updateNewsArticle(id, {
     ...data,
+    body_html: sanitizeRichText(data.body_html),
     featured_image_url: data.featured_image_url || undefined,
     author_id: data.author_id || undefined,
   });

@@ -8,6 +8,7 @@ import {
   updatePublication,
   deletePublication,
 } from "@/lib/services/publications";
+import { sanitizeRichText } from "@/lib/sanitize-html";
 
 async function requireAdmin() {
   const session = await auth();
@@ -17,14 +18,22 @@ async function requireAdmin() {
 export async function createPublicationAction(input: PublicationFormValues) {
   await requireAdmin();
   const data = publicationSchema.parse(input);
-  await createPublication({ ...data, cover_image_url: data.cover_image_url || undefined });
+  await createPublication({
+    ...data,
+    abstract: sanitizeRichText(data.abstract),
+    cover_image_url: data.cover_image_url || undefined,
+  });
   revalidatePath("/admin/publications");
 }
 
 export async function updatePublicationAction(id: string, input: PublicationFormValues) {
   await requireAdmin();
   const data = publicationSchema.parse(input);
-  await updatePublication(id, { ...data, cover_image_url: data.cover_image_url || undefined });
+  await updatePublication(id, {
+    ...data,
+    abstract: sanitizeRichText(data.abstract),
+    cover_image_url: data.cover_image_url || undefined,
+  });
   revalidatePath("/admin/publications");
 }
 

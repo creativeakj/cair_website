@@ -53,6 +53,7 @@ export type EventInput = {
   slug: string;
   title: string;
   description: string;
+  image_url?: string;
   event_date: string;
   end_date?: string;
   location: string;

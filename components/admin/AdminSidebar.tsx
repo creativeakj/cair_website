@@ -10,6 +10,7 @@ import {
   CalendarDays,
   Users,
   ShoppingBag,
+  MessageSquare,
   Mail,
   Rss,
   LogOut,
@@ -22,6 +23,7 @@ const NAV = [
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/team", label: "Team", icon: Users },
   { href: "/admin/merch", label: "Merch", icon: ShoppingBag },
+  { href: "/admin/merch-enquiries", label: "Merch Enquiries", icon: MessageSquare },
   { href: "/admin/contacts", label: "Contacts", icon: Mail },
   { href: "/admin/subscribers", label: "Subscribers", icon: Rss },
 ] as const;
@@ -39,7 +41,8 @@ export function AdminSidebar() {
       </div>
       <nav className="flex-1 space-y-1 p-3">
         {NAV.map((item) => {
-          const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+          const active =
+            pathname === item.href || (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
           const Icon = item.icon;
           return (
             <Link

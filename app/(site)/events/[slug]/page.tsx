@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { EventCountdown } from "@/components/sections/EventCountdown";
-import { formatDate } from "@/components/sections/EventCard";
+import { ArticleBody } from "@/components/sections/ArticleBody";
+import { formatDate, previewText } from "@/components/sections/EventCard";
 import { getEventBySlug, getEvents } from "@/lib/services/events";
 
 export async function generateStaticParams() {
@@ -21,13 +22,15 @@ export async function generateMetadata({
   const event = await getEventBySlug(slug);
   if (!event) return {};
 
+  const description = previewText(event.description, 160);
   return {
     title: event.title,
-    description: event.description,
+    description,
     openGraph: {
       title: event.title,
-      description: event.description,
+      description,
       type: "article",
+      images: event.image_url ? [event.image_url] : undefined,
     },
   };
 }
@@ -66,8 +69,13 @@ export default async function EventDetailPage({
       <PageHeader
         eyebrow={event.category}
         title={event.title}
-        lede={event.description}
+        lede={previewText(event.description, 220)}
       />
+      {event.image_url && (
+        <div className="relative aspect-[21/9] w-full overflow-hidden">
+          <Image src={event.image_url} alt={event.title} fill sizes="100vw" priority className="object-cover" />
+        </div>
+      )}
       <Section className="max-w-4xl">
         <div className="grid gap-8 md:grid-cols-[1.4fr_1fr]">
           <div>
@@ -75,7 +83,9 @@ export default async function EventDetailPage({
               <div className="text-sm text-foreground/70">{formatDate(event.event_date, event.end_date)}</div>
               <div className="mt-1 text-sm text-foreground/70">{event.location}</div>
             </div>
-            <p className="mt-6 text-lg leading-relaxed text-foreground/80">{event.description}</p>
+            <div className="mt-6">
+              <ArticleBody html={event.description} />
+            </div>
 
             {event.partner_logos.length > 0 && (
               <div className="mt-8">

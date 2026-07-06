@@ -15,6 +15,7 @@ import { FileUpload } from "@/components/admin/FileUpload";
 import { teamMemberSchema, type TeamMemberFormValues } from "@/lib/validation/team-member";
 import { createTeamMemberAction, updateTeamMemberAction } from "@/app/admin/(dashboard)/team/actions";
 import type { TeamMemberDTO } from "@/lib/services/team";
+import { slugify } from "@/lib/utils";
 
 const EMPTY: TeamMemberFormValues = {
   slug: "",
@@ -38,14 +39,24 @@ export function TeamMemberFormDialog({
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [slugTouched, setSlugTouched] = useState(false);
 
   const form = useForm<TeamMemberFormValues>({
     resolver: zodResolver(teamMemberSchema),
     defaultValues: EMPTY,
   });
 
+  const nameValue = form.watch("name");
+  useEffect(() => {
+    if (!slugTouched) {
+      form.setValue("slug", slugify(nameValue || ""), { shouldValidate: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameValue, slugTouched]);
+
   useEffect(() => {
     if (open) {
+      setSlugTouched(!!member);
       form.reset(
         member
           ? {
@@ -112,7 +123,13 @@ export function TeamMemberFormDialog({
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        onChange={(e) => {
+                          setSlugTouched(true);
+                          field.onChange(e);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

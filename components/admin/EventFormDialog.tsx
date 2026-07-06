@@ -8,20 +8,22 @@ import { toast } from "sonner";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/admin/FileUpload";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { eventSchema, type EventFormValues } from "@/lib/validation/event";
 import { createEventAction, updateEventAction } from "@/app/admin/(dashboard)/events/actions";
 import type { EventDTO } from "@/lib/services/events";
+import { slugify } from "@/lib/utils";
 
 const EMPTY: EventFormValues = {
   slug: "",
   title: "",
   description: "",
+  image_url: "",
   event_date: "",
   end_date: "",
   location: "",
@@ -49,20 +51,31 @@ export function EventFormDialog({
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [slugTouched, setSlugTouched] = useState(false);
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
     defaultValues: EMPTY,
   });
 
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (!slugTouched) {
+      form.setValue("slug", slugify(titleValue || ""), { shouldValidate: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleValue, slugTouched]);
+
   useEffect(() => {
     if (open) {
+      setSlugTouched(!!event);
       form.reset(
         event
           ? {
               slug: event.slug,
               title: event.title,
               description: event.description,
+              image_url: event.image_url ?? "",
               event_date: toLocalInput(event.event_date),
               end_date: toLocalInput(event.end_date),
               location: event.location,
@@ -127,7 +140,14 @@ export function EventFormDialog({
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="my-event-slug" />
+                      <Input
+                        {...field}
+                        placeholder="my-event-slug"
+                        onChange={(e) => {
+                          setSlugTouched(true);
+                          field.onChange(e);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -137,12 +157,32 @@ export function EventFormDialog({
 
             <FormField
               control={form.control}
+              name="image_url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Banner image</FormLabel>
+                  <FormControl>
+                    <FileUpload
+                      folder="event-assets"
+                      accept="image/*"
+                      label="Upload banner"
+                      value={field.value}
+                      onUploaded={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea rows={3} {...field} />
+                    <RichTextEditor value={field.value} onChange={field.onChange} uploadFolder="event-assets" placeholder="Describe the event…" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

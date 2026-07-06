@@ -94,7 +94,7 @@ export type NewsArticleInput = {
   slug: string;
   title: string;
   excerpt: string;
-  body_md: string;
+  body_html: string;
   featured_image_url?: string;
   author_id?: string;
   category: string;

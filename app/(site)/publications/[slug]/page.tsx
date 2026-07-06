@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHeader, Section } from "@/components/PageHeader";
+import { ArticleBody } from "@/components/sections/ArticleBody";
 import { ShareButtons } from "@/components/sections/ShareButtons";
 import { RelatedItems } from "@/components/sections/RelatedItems";
 import { PublicationDownloadButton } from "@/components/sections/PublicationDownloadButton";
@@ -79,7 +80,7 @@ export default async function PublicationDetailPage({
           <ShareButtons url={url} title={publication.title} />
         </div>
 
-        <p className="text-lg leading-relaxed text-foreground/80">{publication.abstract}</p>
+        <ArticleBody html={publication.abstract} />
 
         <div className="mt-10">
           <PublicationDownloadButton slug={publication.slug} fileUrl={publication.file_url} />

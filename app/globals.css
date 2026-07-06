@@ -134,6 +134,27 @@
   }
 }
 
+/* Shared rich-text typography for editor output and rendered articles/publications/events */
+.prose-cair p { margin-top: 1em; line-height: 1.75; color: var(--foreground); }
+.prose-cair p:first-child { margin-top: 0; }
+.prose-cair h2 { margin-top: 1.75em; font-family: var(--font-display); font-size: 1.5em; color: var(--forest-deep); }
+.prose-cair h3 { margin-top: 1.5em; font-family: var(--font-display); font-size: 1.25em; color: var(--forest-deep); }
+.prose-cair ul, .prose-cair ol { margin-top: 1em; padding-left: 1.25em; }
+.prose-cair ul { list-style: disc; }
+.prose-cair ol { list-style: decimal; }
+.prose-cair blockquote { margin-top: 1.5em; border-left: 2px solid var(--gold); padding-left: 1.25em; font-style: italic; color: var(--muted-foreground); }
+.prose-cair a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.prose-cair img { margin-top: 1.5em; border-radius: 2px; max-width: 100%; height: auto; }
+.prose-cair strong { font-weight: 600; }
+
+.prose-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
 @keyframes heroZoom {
   from { transform: scale(1.12); }
   to { transform: scale(1); }

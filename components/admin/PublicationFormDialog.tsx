@@ -13,9 +13,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/admin/FileUpload";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { publicationSchema, type PublicationFormValues } from "@/lib/validation/publication";
 import { createPublicationAction, updatePublicationAction } from "@/app/admin/(dashboard)/publications/actions";
 import type { PublicationDTO } from "@/lib/services/publications";
+import { slugify } from "@/lib/utils";
 
 const CATEGORIES = ["Policy", "Research", "Report", "Data", "Other"] as const;
 
@@ -30,6 +32,7 @@ export function PublicationFormDialog({
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [slugTouched, setSlugTouched] = useState(false);
 
   const form = useForm<PublicationFormValues>({
     resolver: zodResolver(publicationSchema),
@@ -48,8 +51,17 @@ export function PublicationFormDialog({
     },
   });
 
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (!slugTouched) {
+      form.setValue("slug", slugify(titleValue || ""), { shouldValidate: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleValue, slugTouched]);
+
   useEffect(() => {
     if (open) {
+      setSlugTouched(!!publication);
       form.reset(
         publication
           ? {
@@ -131,7 +143,14 @@ export function PublicationFormDialog({
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="my-publication-slug" />
+                      <Input
+                        {...field}
+                        placeholder="my-publication-slug"
+                        onChange={(e) => {
+                          setSlugTouched(true);
+                          field.onChange(e);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -160,7 +179,7 @@ export function PublicationFormDialog({
                 <FormItem>
                   <FormLabel>Abstract</FormLabel>
                   <FormControl>
-                    <Textarea rows={4} {...field} />
+                    <RichTextEditor value={field.value} onChange={field.onChange} uploadFolder="publication-covers" placeholder="Write the abstract…" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

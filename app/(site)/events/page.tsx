@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { PageHeader, Section } from "@/components/PageHeader";
-import { EventCard, formatDate } from "@/components/sections/EventCard";
+import { EventCard, formatDate, previewText } from "@/components/sections/EventCard";
 import { EventCountdown } from "@/components/sections/EventCountdown";
 import { getEvents } from "@/lib/services/events";
 
@@ -32,11 +32,17 @@ export default async function EventsPage() {
       {featured && (
         <Section>
           <div className="overflow-hidden rounded-sm border border-border bg-[var(--forest-deep)] text-[var(--primary-foreground)]">
+            {featured.image_url && (
+              <div className="relative aspect-[21/9] w-full overflow-hidden">
+                <Image src={featured.image_url} alt={featured.title} fill sizes="100vw" className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--forest-deep)] to-transparent" />
+              </div>
+            )}
             <div className="grid gap-8 p-8 md:grid-cols-[1.4fr_1fr] md:p-12">
               <div>
                 <span className="eyebrow text-[var(--gold)]">Featured</span>
                 <h2 className="mt-3 font-display text-3xl leading-tight md:text-4xl">{featured.title}</h2>
-                <p className="mt-3 text-white/80">{featured.description}</p>
+                <p className="mt-3 text-white/80">{previewText(featured.description, 220)}</p>
                 <p className="mt-4 text-sm text-white/70">{formatDate(featured.event_date, featured.end_date)}</p>
                 <p className="text-sm text-white/70">{featured.location}</p>
 
@@ -80,7 +86,7 @@ export default async function EventsPage() {
       </Section>
 
       {past.length > 0 && (
-        <Section className="border-t border-border pt-16">
+        <Section id="past" className="border-t border-border pt-16">
           <h2 className="mb-8 font-display text-2xl text-[var(--forest-deep)] md:text-3xl">Past convenings</h2>
           <ul className="divide-y divide-border">
             {past.map((e) => (

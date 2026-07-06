@@ -8,9 +8,10 @@ import { getAllTeamMembersAdmin } from "@/lib/services/team";
 import { getAllMerchItemsAdmin } from "@/lib/services/merch";
 import { getContactsAdmin } from "@/lib/services/contacts";
 import { getSubscribersAdmin } from "@/lib/services/subscribers";
+import { getMerchEnquiriesAdmin } from "@/lib/services/merch-enquiries";
 
 async function DashboardData() {
-  const [publications, news, events, team, merch, contacts, subscribers] = await Promise.all([
+  const [publications, news, events, team, merch, contacts, subscribers, merchEnquiries] = await Promise.all([
     getPublications(),
     getAllNewsArticlesAdmin(),
     getEvents(),
@@ -18,9 +19,11 @@ async function DashboardData() {
     getAllMerchItemsAdmin(),
     getContactsAdmin(),
     getSubscribersAdmin(),
+    getMerchEnquiriesAdmin(),
   ]);
 
   const unreadContacts = contacts.filter((c) => !c.is_read).length;
+  const unreadEnquiries = merchEnquiries.filter((e) => !e.is_read).length;
 
   const cards = [
     { href: "/admin/publications", label: "Publications", count: publications.length },
@@ -28,6 +31,7 @@ async function DashboardData() {
     { href: "/admin/events", label: "Events", count: events.length },
     { href: "/admin/team", label: "Team Members", count: team.length },
     { href: "/admin/merch", label: "Merch Items", count: merch.length },
+    { href: "/admin/merch-enquiries", label: "Merch Enquiries", count: merchEnquiries.length, badge: unreadEnquiries },
     { href: "/admin/contacts", label: "Contact Messages", count: contacts.length, badge: unreadContacts },
     { href: "/admin/subscribers", label: "Subscribers", count: subscribers.length },
   ];

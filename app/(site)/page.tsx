@@ -8,6 +8,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { EventCard } from "@/components/sections/EventCard";
+import { PublicationCard } from "@/components/sections/PublicationCard";
+import { NewsCard } from "@/components/sections/NewsCard";
+import { getEvents } from "@/lib/services/events";
+import { getPublications } from "@/lib/services/publications";
+import { getPublishedNewsArticles } from "@/lib/services/news";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -79,7 +85,16 @@ const ORGANIZATION_JSON_LD = {
   ],
 };
 
-export default function Home() {
+export default async function Home() {
+  const [events, publications, news] = await Promise.all([
+    getEvents(),
+    getPublications(),
+    getPublishedNewsArticles(),
+  ]);
+  const upcomingEvents = events.filter((e) => e.status !== "past").slice(0, 3);
+  const latestPublications = publications.slice(0, 3);
+  const latestNews = news.slice(0, 3);
+
   return (
     <>
       <script
@@ -335,6 +350,91 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* UPCOMING EVENTS */}
+      {upcomingEvents.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="eyebrow">Convenings</span>
+              <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+                Upcoming events
+              </h2>
+            </div>
+            <div className="flex gap-6">
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
+              >
+                View all events →
+              </Link>
+              <Link
+                href="/events#past"
+                className="inline-flex items-center gap-2 border-b border-border pb-1 text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground hover:border-[var(--gold)] hover:text-[var(--forest-deep)]"
+              >
+                Past events →
+              </Link>
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {upcomingEvents.map((e) => (
+              <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* PUBLICATIONS */}
+      {latestPublications.length > 0 && (
+        <section className="bg-[var(--secondary)]">
+          <div className="mx-auto max-w-7xl px-6 py-24">
+            <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <span className="eyebrow">Research</span>
+                <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+                  Latest publications
+                </h2>
+              </div>
+              <Link
+                href="/publications"
+                className="inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
+              >
+                View all publications →
+              </Link>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {latestPublications.map((p) => (
+                <PublicationCard key={p.id} publication={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* NEWS */}
+      {latestNews.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="eyebrow">Insights</span>
+              <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+                Latest news
+              </h2>
+            </div>
+            <Link
+              href="/news"
+              className="inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
+            >
+              View all news →
+            </Link>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {latestNews.map((a) => (
+              <NewsCard key={a.id} article={a} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* FAQ */}
       <section className="mx-auto max-w-4xl px-6 py-24">

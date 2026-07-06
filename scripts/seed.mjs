@@ -8,6 +8,13 @@ if (!uri) {
 }
 const dbName = process.env.MONGODB_DB ?? "cair";
 
+function textToHtml(text) {
+  return text
+    .split("\n\n")
+    .map((p) => `<p>${p.trim()}</p>`)
+    .join("");
+}
+
 const TEAM_MEMBERS = [
   {
     slug: "olatunbosun-williams",
@@ -166,7 +173,8 @@ const EVENTS = [
   {
     slug: "democratic-national-dialogue-2026",
     title: "Democratic National Dialogue (DnD)",
-    description: "From Votes to Value: Rebuilding Trust & Confidence to Get Our Democracy Right in 2027. Convened by The Unifiers Movement (TUM) in collaboration with CAIR.",
+    description: textToHtml("From Votes to Value: Rebuilding Trust & Confidence to Get Our Democracy Right in 2027. Convened by The Unifiers Movement (TUM) in collaboration with CAIR."),
+    image_url: "/images/hero.jpg",
     event_date: new Date("2026-10-01T10:00:00+01:00"),
     location: "Abuja, Nigeria (venue TBA)",
     type: "in-person",
@@ -179,7 +187,8 @@ const EVENTS = [
   {
     slug: "africa-america-policy-forum-2026",
     title: "Africa–America Policy Forum 2026",
-    description: "Two days of dialogue with diplomats, scholars, and business leaders on trade, peace, and the next chapter of Africa–America cooperation.",
+    description: textToHtml("Two days of dialogue with diplomats, scholars, and business leaders on trade, peace, and the next chapter of Africa–America cooperation."),
+    image_url: "/images/dialogue.jpg",
     event_date: new Date("2026-09-24T09:00:00-04:00"),
     end_date: new Date("2026-09-25T17:00:00-04:00"),
     location: "Lansing, Michigan · USA",
@@ -193,7 +202,8 @@ const EVENTS = [
   {
     slug: "afcfta-trade-roundtable",
     title: "AfCFTA Trade & Investment Roundtable",
-    description: "Practitioner-led conversation on unlocking cross-border supply chains under the African Continental Free Trade Area.",
+    description: textToHtml("Practitioner-led conversation on unlocking cross-border supply chains under the African Continental Free Trade Area."),
+    image_url: "/images/africa-city.jpg",
     event_date: new Date("2026-07-18T14:00:00+01:00"),
     location: "Abuja, Nigeria",
     type: "in-person",
@@ -205,7 +215,8 @@ const EVENTS = [
   {
     slug: "youth-diplomacy-fellowship-info",
     title: "Youth Diplomacy Fellowship — Info Session",
-    description: "Meet the program directors and past fellows. Q&A on eligibility, curriculum, and the 2026 cohort timeline.",
+    description: textToHtml("Meet the program directors and past fellows. Q&A on eligibility, curriculum, and the 2026 cohort timeline."),
+    image_url: "/images/place-zanzibar.jpg",
     event_date: new Date("2026-07-02T17:00:00-04:00"),
     location: "Virtual · Zoom",
     type: "virtual",
@@ -217,7 +228,8 @@ const EVENTS = [
   {
     slug: "peace-security-briefing",
     title: "Peace & Security Briefing: Sahel Outlook",
-    description: "Closed-door analyst briefing on security dynamics across the Sahel and implications for diaspora communities.",
+    description: textToHtml("Closed-door analyst briefing on security dynamics across the Sahel and implications for diaspora communities."),
+    image_url: "/images/place-kilimanjaro.jpg",
     event_date: new Date("2026-06-26T11:00:00-04:00"),
     location: "Virtual · Zoom",
     type: "virtual",
@@ -229,7 +241,8 @@ const EVENTS = [
   {
     slug: "research-symposium-2025",
     title: "Annual Research Symposium 2025",
-    description: "Inaugural symposium presenting CAIR working papers on migration, capital flows, and the African knowledge economy.",
+    description: textToHtml("Inaugural symposium presenting CAIR working papers on migration, capital flows, and the African knowledge economy."),
+    image_url: "/images/place-marrakech.jpg",
     event_date: new Date("2025-11-14T09:00:00-05:00"),
     location: "Washington, D.C.",
     type: "in-person",
@@ -245,7 +258,7 @@ const PUBLICATIONS = [
     slug: "afcfta-outlook-2026",
     title: "AfCFTA Outlook 2026: Momentum, Bottlenecks, and the Diaspora Dividend",
     summary: "An assessment of the African Continental Free Trade Area's progress and the role of the diaspora in unlocking cross-border commerce.",
-    abstract: "This report examines implementation progress under the African Continental Free Trade Area (AfCFTA) through early 2026, identifying persistent bottlenecks in customs harmonization and logistics, and quantifying the growing role of diaspora-linked capital and trade facilitation. It closes with policy recommendations for African Union member states and diaspora-serving institutions.",
+    abstract: textToHtml("This report examines implementation progress under the African Continental Free Trade Area (AfCFTA) through early 2026, identifying persistent bottlenecks in customs harmonization and logistics, and quantifying the growing role of diaspora-linked capital and trade facilitation. It closes with policy recommendations for African Union member states and diaspora-serving institutions."),
     authors: ["CAIR Research Unit"],
     category: "Research",
     file_url: "/files/publications/afcfta-outlook-2026.pdf",
@@ -258,7 +271,7 @@ const PUBLICATIONS = [
     slug: "diaspora-remittance-policy-brief",
     title: "Diaspora Remittances as Development Capital: A Policy Brief",
     summary: "Policy recommendations for channeling diaspora remittances into structured development financing.",
-    abstract: "Remittances from the African diaspora in North America exceed official development assistance to the continent in most years. This brief proposes three policy mechanisms — diaspora bonds, matched savings programs, and remittance-backed credit facilities — that could convert a portion of these flows into long-term development capital.",
+    abstract: textToHtml("Remittances from the African diaspora in North America exceed official development assistance to the continent in most years. This brief proposes three policy mechanisms — diaspora bonds, matched savings programs, and remittance-backed credit facilities — that could convert a portion of these flows into long-term development capital."),
     authors: ["Dr. Echo Emmanuel Ogbenjuwa"],
     category: "Policy",
     file_url: "/files/publications/diaspora-remittance-policy-brief.pdf",
@@ -271,7 +284,7 @@ const PUBLICATIONS = [
     slug: "peace-security-sahel-report-2025",
     title: "Peace and Security in the Sahel: 2025 Annual Report",
     summary: "CAIR's annual assessment of security dynamics across the Sahel and implications for regional stability.",
-    abstract: "Drawing on closed-door briefings and open-source analysis, this annual report reviews conflict trends, humanitarian access, and multilateral responses across the Sahel region in 2025, with a dedicated section on diaspora community impact.",
+    abstract: textToHtml("Drawing on closed-door briefings and open-source analysis, this annual report reviews conflict trends, humanitarian access, and multilateral responses across the Sahel region in 2025, with a dedicated section on diaspora community impact."),
     authors: ["Dr. Kwame Asante"],
     category: "Report",
     file_url: "/files/publications/peace-security-sahel-report-2025.pdf",
@@ -284,7 +297,7 @@ const PUBLICATIONS = [
     slug: "africa-america-trade-data-2025",
     title: "Africa–America Trade Flows: 2025 Data Digest",
     summary: "A statistical digest of bilateral trade volumes between African markets and the United States in 2025.",
-    abstract: "This data digest compiles bilateral trade statistics between African Union member states and the United States for calendar year 2025, sourced from public customs and trade-office data, with sector breakdowns for agriculture, textiles, and critical minerals.",
+    abstract: textToHtml("This data digest compiles bilateral trade statistics between African Union member states and the United States for calendar year 2025, sourced from public customs and trade-office data, with sector breakdowns for agriculture, textiles, and critical minerals."),
     authors: ["CAIR Research Unit"],
     category: "Data",
     file_url: "/files/publications/africa-america-trade-data-2025.pdf",
@@ -297,7 +310,7 @@ const PUBLICATIONS = [
     slug: "youth-diplomacy-fellowship-outcomes",
     title: "Youth Diplomacy Fellowship: Outcomes & Alumni Impact",
     summary: "A review of the first three cohorts of CAIR's Youth Diplomacy Fellowship and where alumni are now.",
-    abstract: "This review surveys alumni of CAIR's Youth Diplomacy Fellowship across its first three cohorts, documenting placement outcomes, ongoing civic engagement, and recommendations for scaling the program to additional countries.",
+    abstract: textToHtml("This review surveys alumni of CAIR's Youth Diplomacy Fellowship across its first three cohorts, documenting placement outcomes, ongoing civic engagement, and recommendations for scaling the program to additional countries."),
     authors: ["Ms. Aïcha Diallo"],
     category: "Other",
     file_url: "/files/publications/youth-diplomacy-fellowship-outcomes.pdf",
@@ -313,7 +326,7 @@ const NEWS_ARTICLES = [
     slug: "cair-launches-publications-library",
     title: "CAIR Launches Its Research & Publications Library",
     excerpt: "The Center opens a searchable library of policy briefs, reports, and data digests to the public.",
-    body_md: "CAIR is pleased to announce the launch of its Research & Publications library, a searchable collection of policy briefs, annual reports, and data digests produced by our Research Unit, fellows, and advisors.\n\nThe library is organized by category — Policy, Research, Report, and Data — and is filterable by year. Each publication is available as a free PDF download.\n\nWe view this as a core part of our mandate: independent, evidence-led analysis should be available to the policy makers, scholars, and civil society leaders who need it, not locked behind institutional walls.",
+    body_html: textToHtml("CAIR is pleased to announce the launch of its Research & Publications library, a searchable collection of policy briefs, annual reports, and data digests produced by our Research Unit, fellows, and advisors.\n\nThe library is organized by category — Policy, Research, Report, and Data — and is filterable by year. Each publication is available as a free PDF download.\n\nWe view this as a core part of our mandate: independent, evidence-led analysis should be available to the policy makers, scholars, and civil society leaders who need it, not locked behind institutional walls."),
     category: "Announcements",
     tags: ["publications", "research"],
     status: "published",
@@ -325,7 +338,7 @@ const NEWS_ARTICLES = [
     slug: "democratic-national-dialogue-registration-open",
     title: "Registration Opens for the Democratic National Dialogue",
     excerpt: "CAIR and The Unifiers Movement open registration for the October 2026 Democratic National Dialogue in Abuja.",
-    body_md: "Registration is now open for the Democratic National Dialogue (DnD), convened by The Unifiers Movement (TUM) in collaboration with CAIR and the GABA Foundation.\n\nThemed 'From Votes to Value: Rebuilding Trust & Confidence to Get Our Democracy Right in 2027,' the convening will bring together civic leaders, diplomats, and youth organizers in Abuja this October.\n\nMembers interested in attending should register through the Membership page; details on the venue will follow as they are confirmed.",
+    body_html: textToHtml("Registration is now open for the Democratic National Dialogue (DnD), convened by The Unifiers Movement (TUM) in collaboration with CAIR and the GABA Foundation.\n\nThemed 'From Votes to Value: Rebuilding Trust & Confidence to Get Our Democracy Right in 2027,' the convening will bring together civic leaders, diplomats, and youth organizers in Abuja this October.\n\nMembers interested in attending should register through the Membership page; details on the venue will follow as they are confirmed."),
     category: "Events",
     tags: ["events", "diplomacy"],
     status: "published",
@@ -337,7 +350,7 @@ const NEWS_ARTICLES = [
     slug: "afcfta-roundtable-recap",
     title: "Recap: AfCFTA Trade & Investment Roundtable in Abuja",
     excerpt: "Practitioners gathered in Abuja to discuss unlocking cross-border supply chains under the AfCFTA.",
-    body_md: "Last month's AfCFTA Trade & Investment Roundtable brought together logistics operators, customs officials, and investors to discuss practical barriers to cross-border trade under the African Continental Free Trade Area.\n\nKey themes included customs harmonization delays, the financing gap for small and mid-sized exporters, and the opportunity for diaspora-linked capital to fill it. A full summary is available in our AfCFTA Outlook 2026 publication.",
+    body_html: textToHtml("Last month's AfCFTA Trade & Investment Roundtable brought together logistics operators, customs officials, and investors to discuss practical barriers to cross-border trade under the African Continental Free Trade Area.\n\nKey themes included customs harmonization delays, the financing gap for small and mid-sized exporters, and the opportunity for diaspora-linked capital to fill it. A full summary is available in our AfCFTA Outlook 2026 publication."),
     category: "Trade & Investment",
     tags: ["trade", "afcfta"],
     status: "published",
@@ -349,7 +362,7 @@ const NEWS_ARTICLES = [
     slug: "cair-welcomes-new-fellows-2026",
     title: "CAIR Welcomes Its 2026 Class of Fellows",
     excerpt: "Six new fellows join CAIR's Peace & Security, Research, and Youth Diplomacy programs.",
-    body_md: "CAIR is proud to welcome its 2026 class of fellows across the Peace & Security, Research & Publications, and Youth Diplomacy programs. This cohort brings expertise spanning conflict analysis, trade policy, and civic technology.\n\nFellows will spend the year contributing to CAIR's research output and program delivery, with a closing symposium planned for late 2026.",
+    body_html: textToHtml("CAIR is proud to welcome its 2026 class of fellows across the Peace & Security, Research & Publications, and Youth Diplomacy programs. This cohort brings expertise spanning conflict analysis, trade policy, and civic technology.\n\nFellows will spend the year contributing to CAIR's research output and program delivery, with a closing symposium planned for late 2026."),
     category: "Announcements",
     tags: ["fellowship", "announcements"],
     status: "published",

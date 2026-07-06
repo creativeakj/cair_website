@@ -12,6 +12,18 @@ export function PageHeader({ eyebrow, title, lede }: { eyebrow: string; title: R
   );
 }
 
-export function Section({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`mx-auto max-w-7xl px-6 py-20 ${className}`}>{children}</section>;
+export function Section({
+  children,
+  className = "",
+  id,
+}: {
+  children: ReactNode;
+  className?: string;
+  id?: string;
+}) {
+  return (
+    <section id={id} className={`mx-auto max-w-7xl px-6 py-20 ${className}`}>
+      {children}
+    </section>
+  );
 }

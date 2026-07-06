@@ -13,16 +13,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/admin/FileUpload";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { newsArticleSchema, type NewsArticleFormValues } from "@/lib/validation/news-article";
 import { createNewsArticleAction, updateNewsArticleAction } from "@/app/admin/(dashboard)/news/actions";
 import type { NewsArticleDTO } from "@/lib/services/news";
 import type { TeamMemberDTO } from "@/lib/services/team";
+import { slugify } from "@/lib/utils";
 
 const EMPTY: NewsArticleFormValues = {
   slug: "",
   title: "",
   excerpt: "",
-  body_md: "",
+  body_html: "",
   featured_image_url: "",
   author_id: "",
   category: "",
@@ -44,21 +46,31 @@ export function NewsArticleFormDialog({
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [slugTouched, setSlugTouched] = useState(false);
 
   const form = useForm<NewsArticleFormValues>({
     resolver: zodResolver(newsArticleSchema),
     defaultValues: EMPTY,
   });
 
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (!slugTouched) {
+      form.setValue("slug", slugify(titleValue || ""), { shouldValidate: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleValue, slugTouched]);
+
   useEffect(() => {
     if (open) {
+      setSlugTouched(!!article);
       form.reset(
         article
           ? {
               slug: article.slug,
               title: article.title,
               excerpt: article.excerpt,
-              body_md: article.body_md,
+              body_html: article.body_html,
               featured_image_url: article.featured_image_url ?? "",
               author_id: article.author_id ?? "",
               category: article.category,
@@ -120,7 +132,14 @@ export function NewsArticleFormDialog({
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="my-article-slug" />
+                      <Input
+                        {...field}
+                        placeholder="my-article-slug"
+                        onChange={(e) => {
+                          setSlugTouched(true);
+                          field.onChange(e);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -144,12 +163,12 @@ export function NewsArticleFormDialog({
 
             <FormField
               control={form.control}
-              name="body_md"
+              name="body_html"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Body (Markdown)</FormLabel>
+                  <FormLabel>Body</FormLabel>
                   <FormControl>
-                    <Textarea rows={8} {...field} />
+                    <RichTextEditor value={field.value} onChange={field.onChange} uploadFolder="news-images" placeholder="Write the article…" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

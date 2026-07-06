@@ -8,6 +8,7 @@ export interface CairEvent {
   slug: string;
   title: string;
   description: string;
+  image_url?: string;
   event_date: Date;
   end_date?: Date;
   location: string;

@@ -90,7 +90,7 @@ export default async function NewsDetailPage({
           <ShareButtons url={url} title={article.title} />
         </div>
 
-        <ArticleBody markdown={article.body_md} />
+        <ArticleBody html={article.body_html} />
 
         <div className="mt-16">
           <RelatedItems
