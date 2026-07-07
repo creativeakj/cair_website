@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { NewsArticleFormDialog } from "@/components/admin/NewsArticleFormDialog";
-import { deleteNewsArticleAction } from "@/app/admin/(dashboard)/news/actions";
+import { deleteNewsArticleAction, notifyNewsSubscribersAction } from "@/app/admin/(dashboard)/news/actions";
 import type { NewsArticleDTO } from "@/lib/services/news";
 import type { TeamMemberDTO } from "@/lib/services/team";
 
@@ -32,6 +32,8 @@ export function NewsAdminClient({
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<NewsArticleDTO | null>(null);
   const [deleting, setDeleting] = useState<NewsArticleDTO | null>(null);
+  const [notifying, setNotifying] = useState<NewsArticleDTO | null>(null);
+  const [sending, setSending] = useState(false);
 
   async function confirmDelete() {
     if (!deleting) return;
@@ -43,6 +45,20 @@ export function NewsAdminClient({
       toast.error(err instanceof Error ? err.message : "Could not delete article");
     } finally {
       setDeleting(null);
+    }
+  }
+
+  async function confirmNotify() {
+    if (!notifying) return;
+    setSending(true);
+    try {
+      const count = await notifyNewsSubscribersAction(notifying.id);
+      toast.success(count > 0 ? `Notified ${count} subscriber${count === 1 ? "" : "s"}` : "No active subscribers to notify");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send notification");
+    } finally {
+      setSending(false);
+      setNotifying(null);
     }
   }
 
@@ -93,6 +109,9 @@ export function NewsAdminClient({
                   >
                     Edit
                   </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setNotifying(a)}>
+                    Notify
+                  </Button>
                   <Button variant="ghost" size="sm" onClick={() => setDeleting(a)}>
                     Delete
                   </Button>
@@ -126,6 +145,23 @@ export function NewsAdminClient({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={!!notifying} onOpenChange={(open) => !open && setNotifying(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notify subscribers about &ldquo;{notifying?.title}&rdquo;?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This emails every active subscriber right away. It can&apos;t be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmNotify} disabled={sending}>
+              {sending ? "Sending…" : "Send notification"}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

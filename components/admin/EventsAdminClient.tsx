@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { EventFormDialog } from "@/components/admin/EventFormDialog";
-import { deleteEventAction } from "@/app/admin/(dashboard)/events/actions";
+import { deleteEventAction, notifyEventSubscribersAction } from "@/app/admin/(dashboard)/events/actions";
 import type { EventDTO } from "@/lib/services/events";
 
 export function EventsAdminClient({ events }: { events: EventDTO[] }) {
@@ -25,6 +25,8 @@ export function EventsAdminClient({ events }: { events: EventDTO[] }) {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<EventDTO | null>(null);
   const [deleting, setDeleting] = useState<EventDTO | null>(null);
+  const [notifying, setNotifying] = useState<EventDTO | null>(null);
+  const [sending, setSending] = useState(false);
 
   async function confirmDelete() {
     if (!deleting) return;
@@ -36,6 +38,20 @@ export function EventsAdminClient({ events }: { events: EventDTO[] }) {
       toast.error(err instanceof Error ? err.message : "Could not delete event");
     } finally {
       setDeleting(null);
+    }
+  }
+
+  async function confirmNotify() {
+    if (!notifying) return;
+    setSending(true);
+    try {
+      const count = await notifyEventSubscribersAction(notifying.id);
+      toast.success(count > 0 ? `Notified ${count} subscriber${count === 1 ? "" : "s"}` : "No active subscribers to notify");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send notification");
+    } finally {
+      setSending(false);
+      setNotifying(null);
     }
   }
 
@@ -84,6 +100,9 @@ export function EventsAdminClient({ events }: { events: EventDTO[] }) {
                   >
                     Edit
                   </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setNotifying(e)}>
+                    Notify
+                  </Button>
                   <Button variant="ghost" size="sm" onClick={() => setDeleting(e)}>
                     Delete
                   </Button>
@@ -112,6 +131,23 @@ export function EventsAdminClient({ events }: { events: EventDTO[] }) {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={!!notifying} onOpenChange={(open) => !open && setNotifying(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notify subscribers about &ldquo;{notifying?.title}&rdquo;?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This emails every active subscriber right away. It can&apos;t be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmNotify} disabled={sending}>
+              {sending ? "Sending…" : "Send notification"}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

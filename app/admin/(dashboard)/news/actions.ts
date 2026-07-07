@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { newsArticleSchema, type NewsArticleFormValues } from "@/lib/validation/news-article";
-import { createNewsArticle, updateNewsArticle, deleteNewsArticle } from "@/lib/services/news";
+import { createNewsArticle, updateNewsArticle, deleteNewsArticle, getNewsArticleById } from "@/lib/services/news";
 import { sanitizeRichText } from "@/lib/sanitize-html";
+import { notifySubscribers } from "@/lib/services/subscriber-notify";
 
 async function requireAdmin() {
   const session = await auth();
@@ -39,4 +40,16 @@ export async function deleteNewsArticleAction(id: string) {
   await requireAdmin();
   await deleteNewsArticle(id);
   revalidatePath("/admin/news");
+}
+
+export async function notifyNewsSubscribersAction(id: string): Promise<number> {
+  await requireAdmin();
+  const article = await getNewsArticleById(id);
+  if (!article) throw new Error("Article not found");
+  return notifySubscribers({
+    kind: "news",
+    title: article.title,
+    description: article.excerpt,
+    path: `/news/${article.slug}`,
+  });
 }

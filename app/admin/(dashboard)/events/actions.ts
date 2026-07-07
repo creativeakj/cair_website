@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { eventSchema, type EventFormValues } from "@/lib/validation/event";
-import { createEvent, updateEvent, deleteEvent } from "@/lib/services/events";
+import { createEvent, updateEvent, deleteEvent, getEventById } from "@/lib/services/events";
 import { sanitizeRichText } from "@/lib/sanitize-html";
+import { notifySubscribers } from "@/lib/services/subscriber-notify";
+import { stripHtml, truncate } from "@/lib/utils";
 
 async function requireAdmin() {
   const session = await auth();
@@ -41,4 +43,16 @@ export async function deleteEventAction(id: string) {
   await requireAdmin();
   await deleteEvent(id);
   revalidatePath("/admin/events");
+}
+
+export async function notifyEventSubscribersAction(id: string): Promise<number> {
+  await requireAdmin();
+  const event = await getEventById(id);
+  if (!event) throw new Error("Event not found");
+  return notifySubscribers({
+    kind: "event",
+    title: event.title,
+    description: truncate(stripHtml(event.description)),
+    path: `/events/${event.slug}`,
+  });
 }

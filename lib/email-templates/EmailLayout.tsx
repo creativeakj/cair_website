@@ -22,10 +22,12 @@ const LOGO_URL =
 
 export function EmailLayout({
   preview,
+  eyebrow,
   heading,
   children,
 }: {
   preview: string;
+  eyebrow?: string;
   heading?: string;
   children: ReactNode;
 }) {
@@ -63,6 +65,20 @@ export function EmailLayout({
               padding: "36px 32px",
             }}
           >
+            {eyebrow && (
+              <Text
+                style={{
+                  margin: "0 0 8px",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase" as const,
+                  color: emailColors.teal,
+                }}
+              >
+                {eyebrow}
+              </Text>
+            )}
             {heading && (
               <Text
                 style={{

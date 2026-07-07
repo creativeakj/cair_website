@@ -40,7 +40,14 @@ export function SubscribersAdminClient({ subscribers }: { subscribers: Subscribe
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-display text-2xl text-[var(--forest-deep)]">Subscribers</h1>
-        <span className="text-sm text-muted-foreground">{subscribers.length} total</span>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground">{subscribers.length} total</span>
+          <Button asChild variant="outline" size="sm">
+            <a href="/api/admin/subscribers/export" download>
+              Export CSV
+            </a>
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-sm border border-border">

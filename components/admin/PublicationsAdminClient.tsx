@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PublicationFormDialog } from "@/components/admin/PublicationFormDialog";
-import { deletePublicationAction } from "@/app/admin/(dashboard)/publications/actions";
+import { deletePublicationAction, notifyPublicationSubscribersAction } from "@/app/admin/(dashboard)/publications/actions";
 import type { PublicationDTO } from "@/lib/services/publications";
 
 export function PublicationsAdminClient({ publications }: { publications: PublicationDTO[] }) {
@@ -25,6 +25,8 @@ export function PublicationsAdminClient({ publications }: { publications: Public
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<PublicationDTO | null>(null);
   const [deleting, setDeleting] = useState<PublicationDTO | null>(null);
+  const [notifying, setNotifying] = useState<PublicationDTO | null>(null);
+  const [sending, setSending] = useState(false);
 
   function openCreate() {
     setEditing(null);
@@ -46,6 +48,20 @@ export function PublicationsAdminClient({ publications }: { publications: Public
       toast.error(err instanceof Error ? err.message : "Could not delete publication");
     } finally {
       setDeleting(null);
+    }
+  }
+
+  async function confirmNotify() {
+    if (!notifying) return;
+    setSending(true);
+    try {
+      const count = await notifyPublicationSubscribersAction(notifying.id);
+      toast.success(count > 0 ? `Notified ${count} subscriber${count === 1 ? "" : "s"}` : "No active subscribers to notify");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send notification");
+    } finally {
+      setSending(false);
+      setNotifying(null);
     }
   }
 
@@ -82,6 +98,9 @@ export function PublicationsAdminClient({ publications }: { publications: Public
                   <Button variant="ghost" size="sm" onClick={() => openEdit(p)}>
                     Edit
                   </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setNotifying(p)}>
+                    Notify
+                  </Button>
                   <Button variant="ghost" size="sm" onClick={() => setDeleting(p)}>
                     Delete
                   </Button>
@@ -112,6 +131,23 @@ export function PublicationsAdminClient({ publications }: { publications: Public
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={!!notifying} onOpenChange={(open) => !open && setNotifying(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notify subscribers about &ldquo;{notifying?.title}&rdquo;?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This emails every active subscriber right away. It can&apos;t be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmNotify} disabled={sending}>
+              {sending ? "Sending…" : "Send notification"}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -13,6 +13,10 @@ export function stripHtml(html: string): string {
     .trim();
 }
 
+export function truncate(text: string, length = 200): string {
+  return text.length > length ? `${text.slice(0, length).trimEnd()}…` : text;
+}
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()

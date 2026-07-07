@@ -7,8 +7,10 @@ import {
   createPublication,
   updatePublication,
   deletePublication,
+  getPublicationById,
 } from "@/lib/services/publications";
 import { sanitizeRichText } from "@/lib/sanitize-html";
+import { notifySubscribers } from "@/lib/services/subscriber-notify";
 
 async function requireAdmin() {
   const session = await auth();
@@ -41,4 +43,16 @@ export async function deletePublicationAction(id: string) {
   await requireAdmin();
   await deletePublication(id);
   revalidatePath("/admin/publications");
+}
+
+export async function notifyPublicationSubscribersAction(id: string): Promise<number> {
+  await requireAdmin();
+  const publication = await getPublicationById(id);
+  if (!publication) throw new Error("Publication not found");
+  return notifySubscribers({
+    kind: "publication",
+    title: publication.title,
+    description: publication.summary,
+    path: `/publications/${publication.slug}`,
+  });
 }
