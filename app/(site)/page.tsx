@@ -14,6 +14,9 @@ import { NewsCard } from "@/components/sections/NewsCard";
 import { getEvents } from "@/lib/services/events";
 import { getPublications } from "@/lib/services/publications";
 import { getPublishedNewsArticles } from "@/lib/services/news";
+import { getActiveTeamMembers } from "@/lib/services/team";
+
+const PLACEHOLDER_PHOTO = "/images/team/placeholder.jpg";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -86,14 +89,16 @@ const ORGANIZATION_JSON_LD = {
 };
 
 export default async function Home() {
-  const [events, publications, news] = await Promise.all([
+  const [events, publications, news, teamMembers] = await Promise.all([
     getEvents(),
     getPublications(),
     getPublishedNewsArticles(),
+    getActiveTeamMembers(),
   ]);
   const upcomingEvents = events.filter((e) => e.status !== "past").slice(0, 3);
   const latestPublications = publications.slice(0, 3);
   const latestNews = news.slice(0, 3);
+  const leadership = teamMembers.filter((m) => m.department === "Executive").slice(0, 4);
 
   return (
     <>
@@ -310,18 +315,13 @@ export default async function Home() {
             </Link>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-4">
-            {[
-              ["OW", "Olatunbosun Williams", "Chairman & President"],
-              ["EO", "Dr. Echo Emmanuel Ogbenjuwa", "Vice Chairman"],
-              ["EO", "Mrs. Echo Mary Ocholongwa", "Secretary"],
-              ["OW", "Ambassador Omolara Williams", "Treasurer"],
-            ].map(([initials, name, role]) => (
-              <div key={name} className="bg-background p-6">
-                <div className="grid h-12 w-12 place-items-center rounded-full bg-[var(--forest-deep)] font-display text-lg text-[var(--primary-foreground)]">
-                  {initials}
+            {leadership.map((m) => (
+              <div key={m.id} className="bg-background p-6">
+                <div className="relative h-12 w-12 overflow-hidden rounded-full">
+                  <Image src={m.photo_url || PLACEHOLDER_PHOTO} alt={m.name} fill sizes="48px" className="object-cover" />
                 </div>
-                <div className="mt-4 font-display text-lg text-[var(--forest-deep)]">{name}</div>
-                <div className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{role}</div>
+                <div className="mt-4 font-display text-lg text-[var(--forest-deep)]">{m.name}</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{m.title}</div>
               </div>
             ))}
           </div>

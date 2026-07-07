@@ -8,9 +8,9 @@ export default function AdminDashboardLayout({
 }) {
   return (
     <SessionProvider>
-      <div className="flex min-h-screen bg-background">
+      <div className="flex min-h-screen flex-col bg-background md:flex-row">
         <AdminSidebar />
-        <main className="flex-1 overflow-y-auto p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8">{children}</main>
       </div>
     </SessionProvider>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { getActiveTeamMembers } from "@/lib/services/team";
 
@@ -12,15 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-function initials(name: string) {
-  return name
-    .replace(/^(Mr\.|Mrs\.|Ms\.|Dr\.|Prof\.|Hon\.|Ambassador)\s+/i, "")
-    .split(/\s+/)
-    .map((p) => p[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("");
-}
+const PLACEHOLDER_PHOTO = "/images/team/placeholder.jpg";
 
 const ACCENTS = [
   "bg-[var(--forest-deep)] text-[var(--primary-foreground)]",
@@ -83,8 +76,14 @@ export default async function TeamPage() {
                 className={`group relative flex flex-col overflow-hidden rounded-sm border border-border bg-card transition-all hover:-translate-y-[2px] hover:border-[var(--accent)] hover:shadow-lg ${span}`}
               >
                 <div className={`flex items-center gap-5 p-7 ${ACCENTS[i % ACCENTS.length]}`}>
-                  <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-background/15 font-display text-2xl backdrop-blur">
-                    {initials(p.name)}
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-background/40">
+                    <Image
+                      src={p.photo_url || PLACEHOLDER_PHOTO}
+                      alt={p.name}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
                   </div>
                   <div>
                     <div className="font-display text-xl leading-tight md:text-2xl">{p.name}</div>
@@ -120,8 +119,8 @@ export default async function TeamPage() {
               key={a.id}
               className="group grid grid-cols-[auto_1fr] items-center gap-6 py-5 transition-colors hover:bg-background"
             >
-              <div className="grid h-11 w-11 place-items-center rounded-full border border-border bg-background font-display text-sm text-[var(--forest-deep)] transition-colors group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
-                {initials(a.name)}
+              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-border transition-colors group-hover:border-[var(--accent)]">
+                <Image src={a.photo_url || PLACEHOLDER_PHOTO} alt={a.name} fill sizes="44px" className="object-cover" />
               </div>
               <div>
                 <div className="font-display text-lg text-[var(--forest-deep)]">{a.name}</div>
