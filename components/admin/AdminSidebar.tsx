@@ -13,6 +13,8 @@ import {
   MessageSquare,
   Mail,
   Rss,
+  UserCircle,
+  ShieldCheck,
   LogOut,
 } from "lucide-react";
 
@@ -26,6 +28,8 @@ const NAV = [
   { href: "/admin/merch-enquiries", label: "Merch Enquiries", icon: MessageSquare },
   { href: "/admin/contacts", label: "Contacts", icon: Mail },
   { href: "/admin/subscribers", label: "Subscribers", icon: Rss },
+  { href: "/admin/admins", label: "Admins", icon: ShieldCheck },
+  { href: "/admin/profile", label: "Profile", icon: UserCircle },
 ] as const;
 
 export function AdminSidebar() {
@@ -35,10 +39,10 @@ export function AdminSidebar() {
 
   return (
     <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-border bg-[var(--forest-deep)] text-[var(--primary-foreground)]">
-      <div className="border-b border-white/10 p-6">
+      <Link href="/admin/profile" className="block border-b border-white/10 p-6 hover:bg-white/5">
         <div className="font-display text-xl">CAIR Admin</div>
         <div className="mt-1 text-xs text-white/50">{userName}</div>
-      </div>
+      </Link>
       <nav className="flex-1 space-y-1 p-3">
         {NAV.map((item) => {
           const active =
