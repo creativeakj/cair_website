@@ -89,7 +89,7 @@ export function MerchItem({ item }: { item: MerchItemData }) {
               <div className="font-display text-lg text-[var(--forest-deep)]">{item.name}</div>
               <div className="mt-0.5 text-xs uppercase tracking-[0.16em] text-foreground/55">{item.category}</div>
             </div>
-            <span className="text-xs uppercase tracking-[0.18em] text-[var(--gold)]">Enquire</span>
+            <span className="text-xs uppercase tracking-[0.18em] text-[var(--gold-ink)]">Enquire</span>
           </div>
         </button>
       </DialogTrigger>

@@ -26,7 +26,7 @@ export default async function NewsPage() {
     <>
       <PageHeader
         eyebrow="News & Insights"
-        title={<>Dispatches from <span className="text-[var(--gold)]">the Center.</span></>}
+        title={<>Dispatches from <span className="text-[var(--gold-ink)]">the Center.</span></>}
         lede="Announcements, press releases, and editorial content from CAIR's programs and partners."
       />
       <Section>

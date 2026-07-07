@@ -20,7 +20,7 @@ export default async function MerchPage() {
     <>
       <PageHeader
         eyebrow="The CAIR Shop"
-        title={<>Wear the <span className="text-[var(--gold)]">mission.</span></>}
+        title={<>Wear the <span className="text-[var(--gold-ink)]">mission.</span></>}
         lede="Limited-run apparel and accessories carrying the CAIR mark — designed for members, fellows, and friends of the Center. Proceeds support our programs."
       />
 
@@ -43,7 +43,7 @@ export default async function MerchPage() {
       <section className="bg-[var(--forest-deep)] text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-20 md:grid-cols-2 md:items-center">
           <div>
-            <span className="eyebrow">Bulk & Chapter Orders</span>
+            <span className="eyebrow text-[var(--gold)]">Bulk & Chapter Orders</span>
             <h2 className="mt-4 font-display text-3xl md:text-4xl">
               Outfit your delegation, chapter, or event.
             </h2>

@@ -123,7 +123,7 @@ export default async function Home() {
           <div className="max-w-3xl text-[var(--primary-foreground)]">
             <div className="flex items-center gap-3 opacity-0 [animation:fade-in_0.7s_ease-out_0.1s_forwards]">
               <span className="gold-rule" />
-              <span className="eyebrow">Africa · America · Allied Nations</span>
+              <span className="eyebrow text-[var(--gold)]">Africa · America · Allied Nations</span>
             </div>
             <h1 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl opacity-0 [animation:fade-in_0.9s_ease-out_0.3s_forwards]">
               Building bridges
@@ -224,7 +224,7 @@ export default async function Home() {
             deserves institutions, not just conversations — bodies that convene,
             research, and hold the work together long after the headlines move on.&rdquo;
           </blockquote>
-          <div className="mt-6 text-sm font-medium uppercase tracking-[0.16em] text-[var(--gold)]">
+          <div className="mt-6 text-sm font-medium uppercase tracking-[0.16em] text-[var(--gold-ink)]">
             Olatunbosun Williams
           </div>
           <div className="text-sm text-foreground/60">Chairman &amp; President, CAIR</div>
@@ -236,7 +236,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <span className="eyebrow">A Continent of Wonder</span>
+              <span className="eyebrow text-[var(--gold)]">A Continent of Wonder</span>
               <h2 className="mt-4 font-display text-4xl md:text-5xl">
                 The Africa we work for.
               </h2>
@@ -290,7 +290,7 @@ export default async function Home() {
           ].map(([n, t, d]) => (
             <div key={t}>
               <div className="font-display text-5xl text-[var(--forest-deep)]">{n}</div>
-              <div className="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-[var(--gold)]">{t}</div>
+              <div className="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-[var(--gold-ink)]">{t}</div>
               <div className="mt-1 text-sm text-foreground/70">{d}</div>
             </div>
           ))}
@@ -504,7 +504,7 @@ export default async function Home() {
         <Image src="/images/africa-city.jpg" alt="" fill sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-[var(--forest-deep)]/85" />
         <div className="mx-auto max-w-4xl px-6 py-24 text-center text-[var(--primary-foreground)]">
-          <span className="eyebrow">Join the Center</span>
+          <span className="eyebrow text-[var(--gold)]">Join the Center</span>
           <h2 className="mt-4 font-display text-4xl md:text-5xl">
             Shape the next chapter of <span className="text-[var(--gold)]">Africa–America</span> relations.
           </h2>

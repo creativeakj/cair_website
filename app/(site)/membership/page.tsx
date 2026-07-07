@@ -31,7 +31,7 @@ export default function Membership() {
     <>
       <PageHeader
         eyebrow="Membership"
-        title={<>Join a network shaping <span className="text-[var(--gold)]">Africa–America</span> relations.</>}
+        title={<>Join a network shaping <span className="text-[var(--gold-ink)]">Africa–America</span> relations.</>}
         lede="Membership of CAIR is open to institutions and individuals committed to the Center's mission, values, and Constitution."
       />
 
@@ -53,7 +53,7 @@ export default function Membership() {
             <div key={name as string} className="bg-background p-10">
               <div className="flex items-baseline justify-between">
                 <h2 className="font-display text-3xl text-[var(--forest-deep)]">{name}</h2>
-                <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--gold)]">{audience}</span>
+                <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--gold-ink)]">{audience}</span>
               </div>
               <p className="mt-4 text-foreground/75">{desc}</p>
               <ul className="mt-6 space-y-2 border-t border-border pt-5 text-sm text-foreground/80">

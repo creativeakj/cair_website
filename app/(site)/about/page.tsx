@@ -32,7 +32,7 @@ export default function About() {
     <>
       <PageHeader
         eyebrow="About the Center"
-        title={<>A non-partisan center for <span className="text-[var(--gold)]">African–American</span> cooperation.</>}
+        title={<>A non-partisan center for <span className="text-[var(--gold-ink)]">African–American</span> cooperation.</>}
         lede="CAIR is a non-governmental, non-profit, non-partisan organization registered in the United States and the Federal Republic of Nigeria, with the mandate to strengthen relations across Africa, America, and allied nations."
       />
 
@@ -72,7 +72,7 @@ export default function About() {
           <div className="md:col-span-8 grid gap-8 sm:grid-cols-2">
             {OBJECTIVES.map(([t, d], i) => (
               <div key={t} className="border-t border-[var(--gold)]/60 pt-5">
-                <div className="text-xs font-medium text-[var(--gold)]">0{i + 1}</div>
+                <div className="text-xs font-medium text-[var(--gold-ink)]">0{i + 1}</div>
                 <div className="mt-1 font-display text-xl text-[var(--forest-deep)]">{t}</div>
                 <p className="mt-2 text-sm text-foreground/70">{d}</p>
               </div>
@@ -98,7 +98,7 @@ export default function About() {
             {ORGANS.map(([t, d], i) => (
               <div key={t} className="bg-background p-6">
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-lg text-[var(--gold)]">0{i + 1}</span>
+                  <span className="font-display text-lg text-[var(--gold-ink)]">0{i + 1}</span>
                   <h3 className="font-display text-xl text-[var(--forest-deep)]">{t}</h3>
                 </div>
                 <p className="mt-2 text-sm text-foreground/75">{d}</p>

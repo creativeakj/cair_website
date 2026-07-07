@@ -18,7 +18,7 @@ export default async function Programs() {
     <>
       <PageHeader
         eyebrow="Programs"
-        title={<>Five thematic units. <span className="text-[var(--gold)]">One agenda.</span></>}
+        title={<>Five thematic units. <span className="text-[var(--gold-ink)]">One agenda.</span></>}
         lede="CAIR delivers its mission through specialized units that translate the Constitution's objectives into research, convenings, and partnerships."
       />
 
@@ -27,7 +27,7 @@ export default async function Programs() {
           {programs.map((program) => (
             <article key={program.id} className="grid gap-8 bg-background p-8 md:grid-cols-12 md:p-12">
               <div className="md:col-span-4">
-                <div className="font-display text-5xl text-[var(--gold)]">
+                <div className="font-display text-5xl text-[var(--gold-ink)]">
                   0{program.number}
                 </div>
                 <h2 className="mt-2 font-display text-3xl text-[var(--forest-deep)]">{program.title}</h2>

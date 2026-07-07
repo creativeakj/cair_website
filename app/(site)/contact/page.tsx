@@ -17,7 +17,7 @@ export default function Contact() {
     <>
       <PageHeader
         eyebrow="Contact"
-        title={<>Engage with <span className="text-[var(--gold)]">CAIR.</span></>}
+        title={<>Engage with <span className="text-[var(--gold-ink)]">CAIR.</span></>}
         lede="Reach the Executive Secretariat for partnerships, membership inquiries, research collaboration, or media."
       />
 

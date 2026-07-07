@@ -35,7 +35,7 @@ export function PublicationCard({ publication }: { publication: PublicationDTO }
         <p className="text-sm text-foreground/70">{publication.summary}</p>
         <div className="mt-auto flex items-center justify-between pt-3 text-xs text-muted-foreground">
           <span>{publication.authors.join(", ")}</span>
-          <span className="uppercase tracking-[0.16em] text-[var(--gold)]">Read →</span>
+          <span className="uppercase tracking-[0.16em] text-[var(--gold-ink)]">Read →</span>
         </div>
       </div>
     </Link>

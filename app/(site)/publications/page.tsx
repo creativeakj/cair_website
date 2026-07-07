@@ -19,7 +19,7 @@ export default async function PublicationsPage() {
     <>
       <PageHeader
         eyebrow="Research & Publications"
-        title={<>Evidence for <span className="text-[var(--gold)]">every conversation.</span></>}
+        title={<>Evidence for <span className="text-[var(--gold-ink)]">every conversation.</span></>}
         lede="Policy briefs, annual reports, and data digests from CAIR's Research Unit, fellows, and advisors — free to read and download."
       />
       <Section>

@@ -34,7 +34,7 @@ export function NewsCard({ article }: { article: NewsArticleDTO }) {
           {article.title}
         </h3>
         <p className="text-sm text-foreground/70">{article.excerpt}</p>
-        <div className="mt-auto pt-3 text-xs uppercase tracking-[0.16em] text-[var(--gold)]">Read →</div>
+        <div className="mt-auto pt-3 text-xs uppercase tracking-[0.16em] text-[var(--gold-ink)]">Read →</div>
       </div>
     </Link>
   );

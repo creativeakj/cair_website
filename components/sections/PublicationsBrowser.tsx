@@ -76,7 +76,7 @@ export function PublicationsBrowser({ publications }: { publications: Publicatio
             <h3 className="mt-2 font-display text-2xl text-[var(--forest-deep)] md:text-3xl">{featured.title}</h3>
             <p className="mt-2 max-w-2xl text-sm text-foreground/70">{featured.summary}</p>
           </div>
-          <span className="shrink-0 text-xs uppercase tracking-[0.18em] text-[var(--gold)]">Read →</span>
+          <span className="shrink-0 text-xs uppercase tracking-[0.18em] text-[var(--gold-ink)]">Read →</span>
         </Link>
       )}
 
