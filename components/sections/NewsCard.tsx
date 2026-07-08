@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { cloudinaryFill } from "@/lib/utils";
 import type { NewsArticleDTO } from "@/lib/services/news";
 
 export function NewsCard({ article }: { article: NewsArticleDTO }) {
@@ -12,7 +13,7 @@ export function NewsCard({ article }: { article: NewsArticleDTO }) {
       {article.featured_image_url && (
         <div className="relative aspect-[16/9] w-full overflow-hidden">
           <Image
-            src={article.featured_image_url}
+            src={cloudinaryFill(article.featured_image_url, 800, 450)}
             alt={article.title}
             fill
             sizes="(min-width: 768px) 33vw, 100vw"

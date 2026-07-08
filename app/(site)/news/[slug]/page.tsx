@@ -11,6 +11,7 @@ import {
   getRelatedNewsArticles,
 } from "@/lib/services/news";
 import { getTeamMemberById } from "@/lib/services/team";
+import { cloudinaryFill } from "@/lib/utils";
 
 export async function generateStaticParams() {
   const articles = await getPublishedNewsArticles();
@@ -33,7 +34,7 @@ export async function generateMetadata({
       title: article.title,
       description: article.excerpt,
       type: "article",
-      images: article.featured_image_url ? [article.featured_image_url] : undefined,
+      images: article.featured_image_url ? [cloudinaryFill(article.featured_image_url, 1200, 630)] : undefined,
     },
   };
 }
@@ -79,7 +80,7 @@ export default async function NewsDetailPage({
       />
       {article.featured_image_url && (
         <div className="relative aspect-[21/9] w-full overflow-hidden">
-          <Image src={article.featured_image_url} alt={article.title} fill sizes="100vw" priority className="object-cover" />
+          <Image src={cloudinaryFill(article.featured_image_url, 1600, 686)} alt={article.title} fill sizes="100vw" priority className="object-cover" />
         </div>
       )}
       <Section className="max-w-3xl">

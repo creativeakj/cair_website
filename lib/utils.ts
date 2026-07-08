@@ -26,3 +26,15 @@ export function slugify(input: string): string {
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+// Requests a content-aware crop from Cloudinary (face/subject detection via
+// g_auto) so admin-uploaded photos of any dimension fill a fixed aspect
+// ratio without cutting off the subject, the way a blind CSS object-cover
+// center-crop would. No-ops for non-Cloudinary URLs (e.g. local placeholders).
+export function cloudinaryFill(url: string, width: number, height: number): string {
+  const marker = "/image/upload/";
+  const i = url.indexOf(marker);
+  if (i === -1) return url;
+  const insertAt = i + marker.length;
+  return `${url.slice(0, insertAt)}c_fill,g_auto,w_${width},h_${height}/${url.slice(insertAt)}`;
+}

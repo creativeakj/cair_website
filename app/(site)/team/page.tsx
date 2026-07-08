@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { getActiveTeamMembers } from "@/lib/services/team";
+import { cloudinaryFill } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Team & Leadership",
@@ -78,7 +79,7 @@ export default async function TeamPage() {
                 <div className={`flex items-center gap-5 p-7 ${ACCENTS[i % ACCENTS.length]}`}>
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-background/40">
                     <Image
-                      src={p.photo_url || PLACEHOLDER_PHOTO}
+                      src={cloudinaryFill(p.photo_url || PLACEHOLDER_PHOTO, 256, 256)}
                       alt={p.name}
                       fill
                       sizes="64px"
@@ -120,7 +121,7 @@ export default async function TeamPage() {
               className="group grid grid-cols-[auto_1fr] items-center gap-6 py-5 transition-colors hover:bg-background"
             >
               <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-border transition-colors group-hover:border-[var(--accent)]">
-                <Image src={a.photo_url || PLACEHOLDER_PHOTO} alt={a.name} fill sizes="44px" className="object-cover" />
+                <Image src={cloudinaryFill(a.photo_url || PLACEHOLDER_PHOTO, 256, 256)} alt={a.name} fill sizes="44px" className="object-cover" />
               </div>
               <div>
                 <div className="font-display text-lg text-[var(--forest-deep)]">{a.name}</div>

@@ -7,6 +7,7 @@ import { ShareButtons } from "@/components/sections/ShareButtons";
 import { RelatedItems } from "@/components/sections/RelatedItems";
 import { PublicationDownloadButton } from "@/components/sections/PublicationDownloadButton";
 import { getPublicationBySlug, getPublications, getRelatedPublications } from "@/lib/services/publications";
+import { cloudinaryFill } from "@/lib/utils";
 
 export async function generateStaticParams() {
   const publications = await getPublications();
@@ -29,7 +30,7 @@ export async function generateMetadata({
       title: publication.title,
       description: publication.summary,
       type: "article",
-      images: publication.cover_image_url ? [publication.cover_image_url] : undefined,
+      images: publication.cover_image_url ? [cloudinaryFill(publication.cover_image_url, 1200, 630)] : undefined,
     },
   };
 }
@@ -70,7 +71,7 @@ export default async function PublicationDetailPage({
       />
       {publication.cover_image_url && (
         <div className="relative aspect-[21/9] w-full overflow-hidden">
-          <Image src={publication.cover_image_url} alt={publication.title} fill sizes="100vw" priority className="object-cover" />
+          <Image src={cloudinaryFill(publication.cover_image_url, 1600, 686)} alt={publication.title} fill sizes="100vw" priority className="object-cover" />
         </div>
       )}
       <Section className="max-w-4xl">

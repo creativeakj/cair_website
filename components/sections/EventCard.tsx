@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml, cloudinaryFill } from "@/lib/utils";
 import type { EventDTO } from "@/lib/services/events";
 
 const TYPE_LABEL: Record<EventDTO["type"], string> = {
@@ -35,7 +35,7 @@ export function EventCard({ event }: { event: EventDTO }) {
       {event.image_url && (
         <Link href={`/events/${event.slug}`} className="relative block aspect-[16/9] w-full overflow-hidden">
           <Image
-            src={event.image_url}
+            src={cloudinaryFill(event.image_url, 800, 450)}
             alt={event.title}
             fill
             sizes="(min-width: 768px) 33vw, 100vw"

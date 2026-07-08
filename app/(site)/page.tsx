@@ -15,6 +15,7 @@ import { getEvents } from "@/lib/services/events";
 import { getPublications } from "@/lib/services/publications";
 import { getPublishedNewsArticles } from "@/lib/services/news";
 import { getActiveTeamMembers } from "@/lib/services/team";
+import { cloudinaryFill } from "@/lib/utils";
 
 const PLACEHOLDER_PHOTO = "/images/team/placeholder.jpg";
 
@@ -318,7 +319,7 @@ export default async function Home() {
             {leadership.map((m) => (
               <div key={m.id} className="bg-background p-6">
                 <div className="relative h-12 w-12 overflow-hidden rounded-full">
-                  <Image src={m.photo_url || PLACEHOLDER_PHOTO} alt={m.name} fill sizes="48px" className="object-cover" />
+                  <Image src={cloudinaryFill(m.photo_url || PLACEHOLDER_PHOTO, 256, 256)} alt={m.name} fill sizes="48px" className="object-cover" />
                 </div>
                 <div className="mt-4 font-display text-lg text-[var(--forest-deep)]">{m.name}</div>
                 <div className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{m.title}</div>

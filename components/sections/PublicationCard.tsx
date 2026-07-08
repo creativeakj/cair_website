@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { cloudinaryFill } from "@/lib/utils";
 import type { PublicationDTO } from "@/lib/services/publications";
 
 export function PublicationCard({ publication }: { publication: PublicationDTO }) {
@@ -14,7 +15,7 @@ export function PublicationCard({ publication }: { publication: PublicationDTO }
       {publication.cover_image_url && (
         <div className="relative aspect-[16/9] w-full overflow-hidden">
           <Image
-            src={publication.cover_image_url}
+            src={cloudinaryFill(publication.cover_image_url, 800, 450)}
             alt={publication.title}
             fill
             sizes="(min-width: 768px) 33vw, 100vw"

@@ -7,6 +7,7 @@ import { EventCountdown } from "@/components/sections/EventCountdown";
 import { ArticleBody } from "@/components/sections/ArticleBody";
 import { formatDate, previewText } from "@/components/sections/EventCard";
 import { getEventBySlug, getEvents } from "@/lib/services/events";
+import { cloudinaryFill } from "@/lib/utils";
 
 export async function generateStaticParams() {
   const events = await getEvents();
@@ -30,7 +31,7 @@ export async function generateMetadata({
       title: event.title,
       description,
       type: "article",
-      images: event.image_url ? [event.image_url] : undefined,
+      images: event.image_url ? [cloudinaryFill(event.image_url, 1200, 630)] : undefined,
     },
   };
 }
@@ -73,7 +74,7 @@ export default async function EventDetailPage({
       />
       {event.image_url && (
         <div className="relative aspect-[21/9] w-full overflow-hidden">
-          <Image src={event.image_url} alt={event.title} fill sizes="100vw" priority className="object-cover" />
+          <Image src={cloudinaryFill(event.image_url, 1600, 686)} alt={event.title} fill sizes="100vw" priority className="object-cover" />
         </div>
       )}
       <Section className="max-w-4xl">
