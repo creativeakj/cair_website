@@ -62,7 +62,7 @@ export type EventInput = {
   status: EventStatus;
   is_featured: boolean;
   partner_logos: string[];
-  registration_url?: string;
+  meeting_link?: string;
 };
 
 export async function createEvent(input: EventInput): Promise<string> {

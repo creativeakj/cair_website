@@ -13,7 +13,7 @@ export const eventSchema = z.object({
   status: z.enum(["upcoming", "registration-open", "past"]),
   is_featured: z.boolean(),
   partner_logos: z.array(z.string().trim().min(1)),
-  registration_url: z.string().trim().optional().or(z.literal("")),
+  meeting_link: z.string().trim().optional().or(z.literal("")),
 });
 
 export type EventFormValues = z.infer<typeof eventSchema>;

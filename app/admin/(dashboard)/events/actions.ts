@@ -21,7 +21,7 @@ export async function createEventAction(input: EventFormValues) {
     description: sanitizeRichText(data.description),
     image_url: data.image_url || undefined,
     end_date: data.end_date || undefined,
-    registration_url: data.registration_url || undefined,
+    meeting_link: data.meeting_link || undefined,
   });
   revalidatePath("/admin/events");
 }
@@ -34,7 +34,7 @@ export async function updateEventAction(id: string, input: EventFormValues) {
     description: sanitizeRichText(data.description),
     image_url: data.image_url || undefined,
     end_date: data.end_date || undefined,
-    registration_url: data.registration_url || undefined,
+    meeting_link: data.meeting_link || undefined,
   });
   revalidatePath("/admin/events");
 }

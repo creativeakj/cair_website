@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { EventCountdown } from "@/components/sections/EventCountdown";
+import { EventRegistrationModal } from "@/components/sections/EventRegistrationModal";
 import { ArticleBody } from "@/components/sections/ArticleBody";
 import { formatDate, previewText } from "@/components/sections/EventCard";
 import { getEventBySlug, getEvents } from "@/lib/services/events";
@@ -101,13 +101,12 @@ export default async function EventDetailPage({
               </div>
             )}
 
-            {event.registration_url && (
-              <Link
-                href={event.registration_url}
-                className="mt-8 inline-flex items-center gap-2 rounded-sm bg-[var(--forest)] px-6 py-3 text-sm font-medium uppercase tracking-[0.18em] text-[var(--primary-foreground)] hover:bg-[var(--forest-deep)]"
-              >
-                Register interest <span aria-hidden>→</span>
-              </Link>
+            {event.status !== "past" && (
+              <EventRegistrationModal
+                eventSlug={event.slug}
+                eventTitle={event.title}
+                triggerClassName="mt-8 inline-flex items-center gap-2 rounded-sm bg-[var(--forest)] px-6 py-3 text-sm font-medium uppercase tracking-[0.18em] text-[var(--primary-foreground)] hover:bg-[var(--forest-deep)]"
+              />
             )}
           </div>
 

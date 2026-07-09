@@ -182,7 +182,6 @@ const EVENTS = [
     status: "registration-open",
     is_featured: true,
     partner_logos: PARTNER_LOGOS,
-    registration_url: "/membership",
   },
   {
     slug: "africa-america-policy-forum-2026",
@@ -197,7 +196,7 @@ const EVENTS = [
     status: "registration-open",
     is_featured: false,
     partner_logos: [],
-    registration_url: "/membership",
+    meeting_link: "https://zoom.us/j/1234567890",
   },
   {
     slug: "afcfta-trade-roundtable",
@@ -396,7 +395,7 @@ async function main() {
   const eventsCount = await upsertAll(db.collection("events"), EVENTS.map((e) => ({
     ...e,
     end_date: e.end_date ?? null,
-    registration_url: e.registration_url ?? null,
+    meeting_link: e.meeting_link ?? null,
   })));
   const publicationsCount = await upsertAll(db.collection("publications"), PUBLICATIONS);
 

@@ -1,27 +1,91 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, ChevronDown } from "lucide-react";
 
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/team", label: "Team" },
   { href: "/programs", label: "Programs" },
-  { href: "/publications", label: "Publications" },
-  { href: "/news", label: "News" },
+  {
+    href: "/publications",
+    label: "Publications",
+    children: [
+      { href: "/publications", label: "Publications" },
+      { href: "/news", label: "News" },
+    ],
+  },
   { href: "/events", label: "Events" },
-  { href: "/membership", label: "Membership" },
   { href: "/merch", label: "Merch" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
+const FLAT_NAV: { href: string; label: string }[] = NAV.flatMap(
+  (n): { href: string; label: string }[] =>
+    "children" in n ? n.children.map((c) => ({ href: c.href, label: c.label })) : [{ href: n.href, label: n.label }],
+);
+
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function NavDropdown({
+  label,
+  href,
+  items,
+  active,
+}: {
+  label: string;
+  href: string;
+  items: ReadonlyArray<{ href: string; label: string }>;
+  active: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <div className={`flex items-center gap-1 ${cnActive(active)}`}>
+        <Link href={href}>{label}</Link>
+        <button
+          type="button"
+          aria-label={`${label} submenu`}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="p-0.5"
+        >
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+      </div>
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-2 min-w-[10rem] rounded-sm border border-border bg-background py-1 shadow-lg">
+          {items.map((c) => (
+            <Link
+              key={c.href}
+              href={c.href}
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+            >
+              {c.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function SiteHeader() {
@@ -29,8 +93,8 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const filtered = query.trim()
-    ? NAV.filter((n) => n.label.toLowerCase().includes(query.toLowerCase().trim()))
-    : NAV;
+    ? FLAT_NAV.filter((n) => n.label.toLowerCase().includes(query.toLowerCase().trim()))
+    : FLAT_NAV;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -46,15 +110,21 @@ export function SiteHeader() {
           />
         </Link>
         <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
-          {NAV.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className={cnActive(isActive(pathname, n.href))}
-            >
-              {n.label}
-            </Link>
-          ))}
+          {NAV.map((n) =>
+            "children" in n ? (
+              <NavDropdown
+                key={n.href}
+                label={n.label}
+                href={n.href}
+                items={n.children}
+                active={n.children.some((c) => isActive(pathname, c.href))}
+              />
+            ) : (
+              <Link key={n.href} href={n.href} className={cnActive(isActive(pathname, n.href))}>
+                {n.label}
+              </Link>
+            ),
+          )}
         </nav>
         <div className="flex items-center gap-2">
           <Link

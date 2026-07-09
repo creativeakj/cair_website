@@ -32,7 +32,7 @@ const EMPTY: EventFormValues = {
   status: "upcoming",
   is_featured: false,
   partner_logos: [],
-  registration_url: "",
+  meeting_link: "",
 };
 
 function toLocalInput(iso?: string) {
@@ -84,7 +84,7 @@ export function EventFormDialog({
               status: event.status,
               is_featured: event.is_featured,
               partner_logos: event.partner_logos,
-              registration_url: event.registration_url ?? "",
+              meeting_link: event.meeting_link ?? "",
             }
           : EMPTY,
       );
@@ -294,13 +294,16 @@ export function EventFormDialog({
 
             <FormField
               control={form.control}
-              name="registration_url"
+              name="meeting_link"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Registration link (optional)</FormLabel>
+                  <FormLabel>Meeting link (Zoom / Google Meet, optional)</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="/membership" />
+                    <Input {...field} placeholder="https://zoom.us/j/..." />
                   </FormControl>
+                  <p className="text-xs text-muted-foreground">
+                    Emailed automatically to everyone who registers. Leave blank for in-person-only events.
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}

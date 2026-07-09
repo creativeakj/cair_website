@@ -9,6 +9,7 @@ import type { Subscriber } from "@/types/subscriber";
 import type { Program } from "@/types/program";
 import type { AdminUser } from "@/types/admin-user";
 import type { MerchEnquiry } from "@/types/merch-enquiry";
+import type { EventRegistration } from "@/types/event-registration";
 
 export async function publicationsCollection() {
   const db = await getDb();
@@ -58,4 +59,9 @@ export async function adminUsersCollection() {
 export async function merchEnquiriesCollection() {
   const db = await getDb();
   return db.collection<MerchEnquiry>("merch_enquiries");
+}
+
+export async function eventRegistrationsCollection() {
+  const db = await getDb();
+  return db.collection<EventRegistration>("event_registrations");
 }
