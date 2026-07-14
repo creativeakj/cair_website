@@ -7,21 +7,26 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Search, ChevronDown } from "lucide-react";
 import { T } from "@/components/i18n/T";
 import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
+import { SHOW_PUBLICATIONS } from "@/lib/feature-flags";
 
 const NAV = [
   { href: "/", label: "Home", tKey: "home" },
   { href: "/about", label: "About", tKey: "about" },
   { href: "/team", label: "Team", tKey: "team" },
   { href: "/programs", label: "Programs", tKey: "programs" },
-  {
-    href: "/publications",
-    label: "Publications",
-    tKey: "publications",
-    children: [
-      { href: "/publications", label: "Publications", tKey: "publications" },
-      { href: "/news", label: "News", tKey: "news" },
-    ],
-  },
+  ...(SHOW_PUBLICATIONS
+    ? [
+        {
+          href: "/publications",
+          label: "Publications",
+          tKey: "publications",
+          children: [
+            { href: "/publications", label: "Publications", tKey: "publications" },
+            { href: "/news", label: "News", tKey: "news" },
+          ],
+        },
+      ]
+    : [{ href: "/news", label: "News", tKey: "news" }]),
   { href: "/events", label: "Events", tKey: "events" },
   { href: "/contact", label: "Contact", tKey: "contact" },
 ] as const;

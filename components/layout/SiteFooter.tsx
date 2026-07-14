@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/sections/NewsletterForm";
 import { T } from "@/components/i18n/T";
+import { SHOW_PUBLICATIONS } from "@/lib/feature-flags";
 
 const EXPLORE_LINKS = [
   { href: "/about", label: "About" },
@@ -10,7 +11,7 @@ const EXPLORE_LINKS = [
 ] as const;
 
 const INSIGHTS_LINKS = [
-  { href: "/publications", label: "Publications" },
+  ...(SHOW_PUBLICATIONS ? [{ href: "/publications", label: "Publications" }] : []),
   { href: "/news", label: "News" },
   { href: "/events", label: "Events" },
   { href: "/merch", label: "Merch" },

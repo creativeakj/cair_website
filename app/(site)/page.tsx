@@ -13,6 +13,7 @@ import { PublicationCard } from "@/components/sections/PublicationCard";
 import { NewsCard } from "@/components/sections/NewsCard";
 import { PlacesCarousel } from "@/components/sections/PlacesCarousel";
 import { T } from "@/components/i18n/T";
+import { SHOW_PUBLICATIONS } from "@/lib/feature-flags";
 import { getEvents } from "@/lib/services/events";
 import { getPublications } from "@/lib/services/publications";
 import { getPublishedNewsArticles } from "@/lib/services/news";
@@ -367,7 +368,7 @@ export default async function Home() {
       )}
 
       {/* PUBLICATIONS */}
-      {latestPublications.length > 0 && (
+      {SHOW_PUBLICATIONS && latestPublications.length > 0 && (
         <section className="bg-[var(--secondary)]">
           <div className="mx-auto max-w-7xl px-6 py-24">
             <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
