@@ -219,6 +219,39 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* UPCOMING EVENTS */}
+      {upcomingEvents.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="eyebrow">Convenings</span>
+              <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+                Upcoming events
+              </h2>
+            </div>
+            <div className="flex gap-6">
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
+              >
+                View all events →
+              </Link>
+              <Link
+                href="/events#past"
+                className="inline-flex items-center gap-2 border-b border-border pb-1 text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground hover:border-[var(--gold)] hover:text-[var(--forest-deep)]"
+              >
+                Past events →
+              </Link>
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {upcomingEvents.map((e) => (
+              <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* LEADERSHIP QUOTE */}
       <section className="bg-background">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center">
@@ -327,39 +360,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* UPCOMING EVENTS */}
-      {upcomingEvents.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 py-24">
-          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <span className="eyebrow">Convenings</span>
-              <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
-                Upcoming events
-              </h2>
-            </div>
-            <div className="flex gap-6">
-              <Link
-                href="/events"
-                className="inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
-              >
-                View all events →
-              </Link>
-              <Link
-                href="/events#past"
-                className="inline-flex items-center gap-2 border-b border-border pb-1 text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground hover:border-[var(--gold)] hover:text-[var(--forest-deep)]"
-              >
-                Past events →
-              </Link>
-            </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {upcomingEvents.map((e) => (
-              <EventCard key={e.id} event={e} />
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* PUBLICATIONS */}
       {SHOW_PUBLICATIONS && latestPublications.length > 0 && (
