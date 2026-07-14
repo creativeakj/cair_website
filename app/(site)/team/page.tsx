@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { getActiveTeamMembers } from "@/lib/services/team";
-import { cloudinaryFill } from "@/lib/utils";
+import { TeamGrid, TeamList } from "@/components/sections/TeamGrid";
 
 export const metadata: Metadata = {
   title: "Team & Leadership",
@@ -13,14 +12,6 @@ export const metadata: Metadata = {
     description: "Founders, board, and advisors of the Center for African International Relations.",
   },
 };
-
-const PLACEHOLDER_PHOTO = "/images/team/placeholder.jpg";
-
-const ACCENTS = [
-  "bg-[var(--forest-deep)] text-[var(--primary-foreground)]",
-  "bg-[var(--accent)] text-[var(--accent-foreground)]",
-  "bg-[var(--gold)] text-[var(--forest-deep)]",
-];
 
 const TUM_DEPARTMENT = "TUM Collaboration";
 
@@ -71,42 +62,7 @@ export default async function TeamPage() {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-6 md:auto-rows-[minmax(260px,auto)]">
-          {leadership.map((p, i) => {
-            const span = i % 3 === 0 ? "md:col-span-4" : "md:col-span-2";
-            return (
-              <article
-                key={p.id}
-                className={`group relative flex flex-col overflow-hidden rounded-sm border border-border bg-card transition-all hover:-translate-y-[2px] hover:border-[var(--accent)] hover:shadow-lg ${span}`}
-              >
-                <div className={`flex items-center gap-5 p-7 ${ACCENTS[i % ACCENTS.length]}`}>
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-background/40">
-                    <Image
-                      src={cloudinaryFill(p.photo_url || PLACEHOLDER_PHOTO, 256, 256)}
-                      alt={p.name}
-                      fill
-                      sizes="64px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-display text-xl leading-tight md:text-2xl">{p.name}</div>
-                    <div className="text-xs uppercase tracking-[0.18em] opacity-80">{p.title}</div>
-                  </div>
-                </div>
-
-                <div className="flex flex-1 flex-col gap-4 p-7">
-                  <p className="text-foreground/80">{p.bio}</p>
-                </div>
-
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-[var(--accent)] transition-transform duration-500 group-hover:scale-x-100"
-                />
-              </article>
-            );
-          })}
-        </div>
+        <TeamGrid members={leadership} />
       </Section>
 
       {tumOfficers.length > 0 && (
@@ -124,42 +80,7 @@ export default async function TeamPage() {
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-6 md:auto-rows-[minmax(260px,auto)]">
-            {tumOfficers.map((p, i) => {
-              const span = i % 3 === 0 ? "md:col-span-4" : "md:col-span-2";
-              return (
-                <article
-                  key={p.id}
-                  className={`group relative flex flex-col overflow-hidden rounded-sm border border-border bg-card transition-all hover:-translate-y-[2px] hover:border-[var(--accent)] hover:shadow-lg ${span}`}
-                >
-                  <div className={`flex items-center gap-5 p-7 ${ACCENTS[i % ACCENTS.length]}`}>
-                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-background/40">
-                      <Image
-                        src={cloudinaryFill(p.photo_url || PLACEHOLDER_PHOTO, 256, 256)}
-                        alt={p.name}
-                        fill
-                        sizes="64px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="font-display text-xl leading-tight md:text-2xl">{p.name}</div>
-                      <div className="text-xs uppercase tracking-[0.18em] opacity-80">{p.title}</div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-1 flex-col gap-4 p-7">
-                    <p className="text-foreground/80">{p.bio}</p>
-                  </div>
-
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-[var(--accent)] transition-transform duration-500 group-hover:scale-x-100"
-                  />
-                </article>
-              );
-            })}
-          </div>
+          <TeamGrid members={tumOfficers} />
         </Section>
       )}
 
@@ -171,22 +92,7 @@ export default async function TeamPage() {
           </h2>
         </div>
 
-        <ul className="divide-y divide-border border-y border-border">
-          {advisors.map((a) => (
-            <li
-              key={a.id}
-              className="group grid grid-cols-[auto_1fr] items-center gap-6 py-5 transition-colors hover:bg-background"
-            >
-              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-border transition-colors group-hover:border-[var(--accent)]">
-                <Image src={cloudinaryFill(a.photo_url || PLACEHOLDER_PHOTO, 256, 256)} alt={a.name} fill sizes="44px" className="object-cover" />
-              </div>
-              <div>
-                <div className="font-display text-lg text-[var(--forest-deep)]">{a.name}</div>
-                <div className="text-sm text-foreground/70">{a.title}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <TeamList members={advisors} />
       </Section>
 
       <Section>

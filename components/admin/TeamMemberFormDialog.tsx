@@ -7,11 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/admin/FileUpload";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { teamMemberSchema, type TeamMemberFormValues } from "@/lib/validation/team-member";
 import { createTeamMemberAction, updateTeamMemberAction } from "@/app/admin/(dashboard)/team/actions";
 import type { TeamMemberDTO } from "@/lib/services/team";
@@ -96,7 +96,7 @@ export function TeamMemberFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85vh] max-w-xl overflow-y-auto">
+      <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{member ? "Edit Team Member" : "New Team Member"}</DialogTitle>
         </DialogHeader>
@@ -176,7 +176,12 @@ export function TeamMemberFormDialog({
                 <FormItem>
                   <FormLabel>Bio</FormLabel>
                   <FormControl>
-                    <Textarea rows={4} {...field} />
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      uploadFolder="team-bios"
+                      placeholder="Write their bio…"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
