@@ -20,7 +20,6 @@ const NAV = [
     ],
   },
   { href: "/events", label: "Events" },
-  { href: "/merch", label: "Merch" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
