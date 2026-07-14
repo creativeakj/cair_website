@@ -10,6 +10,7 @@ import type { Program } from "@/types/program";
 import type { AdminUser } from "@/types/admin-user";
 import type { MerchEnquiry } from "@/types/merch-enquiry";
 import type { EventRegistration } from "@/types/event-registration";
+import type { DonationEnquiry } from "@/types/donation-enquiry";
 
 export async function publicationsCollection() {
   const db = await getDb();
@@ -64,4 +65,9 @@ export async function merchEnquiriesCollection() {
 export async function eventRegistrationsCollection() {
   const db = await getDb();
   return db.collection<EventRegistration>("event_registrations");
+}
+
+export async function donationEnquiriesCollection() {
+  const db = await getDb();
+  return db.collection<DonationEnquiry>("donation_enquiries");
 }

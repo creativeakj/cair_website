@@ -23,6 +23,7 @@ export const translations = {
     events: { en: "Events", fr: "Événements", sw: "Matukio" },
     contact: { en: "Contact", fr: "Contact", sw: "Wasiliana" },
     joinCair: { en: "Join CAIR", fr: "Rejoindre CAIR", sw: "Jiunge na CAIR" },
+    donateNow: { en: "Donate Now", fr: "Faire un don", sw: "Changia Sasa" },
   },
   footer: {
     tagline: {

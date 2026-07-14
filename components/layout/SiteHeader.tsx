@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Search, ChevronDown } from "lucide-react";
 import { T } from "@/components/i18n/T";
 import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
+import { DonateModal } from "@/components/sections/DonateModal";
 import { SHOW_PUBLICATIONS } from "@/lib/feature-flags";
 
 const NAV = [
@@ -102,6 +103,7 @@ function NavDropdown({
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [donateOpen, setDonateOpen] = useState(false);
   const [query, setQuery] = useState("");
   const filtered = query.trim()
     ? FLAT_NAV.filter((n) => n.label.toLowerCase().includes(query.toLowerCase().trim()))
@@ -145,6 +147,13 @@ export function SiteHeader() {
           >
             <T path="nav.joinCair" />
           </Link>
+          <button
+            type="button"
+            onClick={() => setDonateOpen(true)}
+            className="hidden rounded-sm bg-[var(--gold)] px-4 py-2 text-xs uppercase tracking-[0.18em] text-[var(--forest-deep)] transition-opacity hover:opacity-90 lg:inline-block"
+          >
+            <T path="nav.donateNow" />
+          </button>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -196,8 +205,19 @@ export function SiteHeader() {
           >
             <T path="nav.joinCair" />
           </Link>
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              setDonateOpen(true);
+            }}
+            className="mt-2 rounded-sm bg-[var(--gold)] px-4 py-3 text-center text-xs uppercase tracking-[0.18em] text-[var(--forest-deep)] transition-opacity hover:opacity-90"
+          >
+            <T path="nav.donateNow" />
+          </button>
         </nav>
       </div>
+      <DonateModal open={donateOpen} onOpenChange={setDonateOpen} />
     </header>
   );
 }
