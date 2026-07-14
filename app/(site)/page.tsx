@@ -11,6 +11,8 @@ import {
 import { EventCard } from "@/components/sections/EventCard";
 import { PublicationCard } from "@/components/sections/PublicationCard";
 import { NewsCard } from "@/components/sections/NewsCard";
+import { PlacesCarousel } from "@/components/sections/PlacesCarousel";
+import { T } from "@/components/i18n/T";
 import { getEvents } from "@/lib/services/events";
 import { getPublications } from "@/lib/services/publications";
 import { getPublishedNewsArticles } from "@/lib/services/news";
@@ -58,10 +60,10 @@ const PILLARS = [
 ] as const;
 
 const PLACES = [
-  { src: "/images/place-kilimanjaro.jpg", name: "Mount Kilimanjaro", country: "Tanzania", h: "md:mt-10" },
-  { src: "/images/place-victoria-falls.jpg", name: "Victoria Falls", country: "Zambia · Zimbabwe", h: "" },
-  { src: "/images/place-zanzibar.jpg", name: "Zanzibar Coast", country: "Tanzania", h: "md:mt-16" },
-  { src: "/images/place-marrakech.jpg", name: "Marrakech", country: "Morocco", h: "md:mt-4" },
+  { src: "/images/place-kilimanjaro.jpg", name: "Mount Kilimanjaro", country: "Tanzania" },
+  { src: "/images/place-victoria-falls.jpg", name: "Victoria Falls", country: "Zambia · Zimbabwe" },
+  { src: "/images/place-zanzibar.jpg", name: "Zanzibar Coast", country: "Tanzania" },
+  { src: "/images/place-marrakech.jpg", name: "Marrakech", country: "Morocco" },
 ];
 
 const ORGANIZATION_JSON_LD = {
@@ -124,26 +126,26 @@ export default async function Home() {
           <div className="max-w-3xl text-[var(--primary-foreground)]">
             <div className="flex items-center gap-3 opacity-0 [animation:fade-in_0.7s_ease-out_0.1s_forwards]">
               <span className="gold-rule" />
-              <span className="eyebrow text-[var(--gold)]">Africa · America · Allied Nations</span>
+              <span className="eyebrow text-[var(--gold)]">
+                <T path="home.heroEyebrow" />
+              </span>
             </div>
             <h1 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl opacity-0 [animation:fade-in_0.9s_ease-out_0.3s_forwards]">
-              Building bridges
+              <T path="home.heroHeadingLine1" />
               <br />
               <span className="bg-gradient-to-r from-[var(--gold)] via-amber-300 to-[var(--gold)] bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_6s_linear_infinite]">
-                between continents.
+                <T path="home.heroHeadingLine2" />
               </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-white/85 opacity-0 [animation:fade-in_0.9s_ease-out_0.55s_forwards]">
-              The Center for African International Relations advances dialogue,
-              research, and partnership for a future shaped by peace, prosperity,
-              and shared global values.
+              <T path="home.heroSubhead" />
             </p>
             <div className="mt-10 flex flex-wrap gap-4 opacity-0 [animation:fade-in_0.9s_ease-out_0.8s_forwards]">
               <Link href="/about" className="rounded-sm bg-[var(--gold)] px-6 py-3 text-sm font-medium uppercase tracking-[0.18em] text-[var(--forest-deep)] shadow-lg shadow-[var(--gold)]/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[var(--gold)]/30">
-                Our Mission
+                <T path="home.ctaMission" />
               </Link>
               <Link href="/membership" className="rounded-sm border border-white/40 px-6 py-3 text-sm font-medium uppercase tracking-[0.18em] text-white transition-colors hover:bg-white/10">
-                Become a Member
+                <T path="home.ctaMember" />
               </Link>
             </div>
           </div>
@@ -157,19 +159,20 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
-            <span className="eyebrow">Vision</span>
+            <span className="eyebrow">
+              <T path="home.visionEyebrow" />
+            </span>
             <h2 className="mt-4 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
-              A leading hub for African–American cooperation.
+              <T path="home.visionHeading" />
             </h2>
             <p className="mt-5 text-foreground/70">
-              Five thematic units translate that vision into research, convenings,
-              and partnerships on the ground.
+              <T path="home.visionParagraph" />
             </p>
             <Link
               href="/programs"
               className="mt-6 inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]"
             >
-              See all programs →
+              <T path="home.seeAllPrograms" />
             </Link>
           </div>
           <div className="md:col-span-8 md:pt-3">
@@ -199,18 +202,17 @@ export default async function Home() {
             <Image src="/images/dialogue.jpg" alt="Diplomatic dialogue" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           </div>
           <div>
-            <span className="eyebrow">Mission</span>
+            <span className="eyebrow">
+              <T path="home.missionEyebrow" />
+            </span>
             <h2 className="mt-4 font-display text-3xl text-[var(--forest-deep)] md:text-5xl">
-              Dialogue. Research. Advocacy. Partnership.
+              <T path="home.missionHeading" />
             </h2>
             <p className="mt-6 text-lg text-foreground/80">
-              We promote engagement that strengthens African–American relations,
-              enhances cooperation with allied nations, and creates pathways for
-              sustainable development, democratic governance, and international
-              collaboration.
+              <T path="home.missionParagraph" />
             </p>
             <Link href="/programs" className="mt-8 inline-flex items-center gap-2 border-b border-[var(--gold)] pb-1 text-sm font-medium uppercase tracking-[0.18em] text-[var(--forest-deep)]">
-              Explore our programs →
+              <T path="home.exploreProgramsLink" />
             </Link>
           </div>
         </div>
@@ -237,39 +239,18 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <span className="eyebrow text-[var(--gold)]">A Continent of Wonder</span>
+              <span className="eyebrow text-[var(--gold)]">
+                <T path="home.placesEyebrow" />
+              </span>
               <h2 className="mt-4 font-display text-4xl md:text-5xl">
-                The Africa we work for.
+                <T path="home.placesHeading" />
               </h2>
               <p className="mt-4 max-w-xl text-white/70">
-                From the snows of Kilimanjaro to the medinas of Marrakech — the
-                landscapes, cities, and cultures that shape every conversation.
+                <T path="home.placesParagraph" />
               </p>
             </div>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-            {PLACES.map((p) => (
-              <figure
-                key={p.name}
-                className={`group relative overflow-hidden rounded-sm ${p.h}`}
-              >
-                <div className="relative aspect-[4/5] w-full">
-                  <Image
-                    src={p.src}
-                    alt={p.name}
-                    fill
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--forest-deep)] via-[var(--forest-deep)]/30 to-transparent" />
-                <figcaption className="absolute inset-x-0 bottom-0 p-4">
-                  <div className="font-display text-lg md:text-xl">{p.name}</div>
-                  <div className="text-xs uppercase tracking-[0.18em] text-[var(--gold)]">{p.country}</div>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <PlacesCarousel places={PLACES} />
         </div>
       </section>
 

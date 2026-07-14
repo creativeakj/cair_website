@@ -22,10 +22,13 @@ const ACCENTS = [
   "bg-[var(--gold)] text-[var(--forest-deep)]",
 ];
 
+const TUM_DEPARTMENT = "TUM Collaboration";
+
 export default async function TeamPage() {
   const members = await getActiveTeamMembers();
   const leadership = members.filter((m) => m.department === "Executive");
-  const advisors = members.filter((m) => m.department !== "Executive");
+  const tumOfficers = members.filter((m) => m.department === TUM_DEPARTMENT);
+  const advisors = members.filter((m) => m.department !== "Executive" && m.department !== TUM_DEPARTMENT);
 
   return (
     <>
@@ -105,6 +108,60 @@ export default async function TeamPage() {
           })}
         </div>
       </Section>
+
+      {tumOfficers.length > 0 && (
+        <Section className="border-t border-border">
+          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="eyebrow">In Collaboration with TUM</div>
+              <h2 className="mt-2 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
+                Officers of the Collaboration
+              </h2>
+            </div>
+            <p className="max-w-md text-sm text-foreground/70">
+              Leaders from The Unifiers Movement (TUM) who co-convene programs and dialogues alongside CAIR&apos;s
+              own officers.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-6 md:auto-rows-[minmax(260px,auto)]">
+            {tumOfficers.map((p, i) => {
+              const span = i % 3 === 0 ? "md:col-span-4" : "md:col-span-2";
+              return (
+                <article
+                  key={p.id}
+                  className={`group relative flex flex-col overflow-hidden rounded-sm border border-border bg-card transition-all hover:-translate-y-[2px] hover:border-[var(--accent)] hover:shadow-lg ${span}`}
+                >
+                  <div className={`flex items-center gap-5 p-7 ${ACCENTS[i % ACCENTS.length]}`}>
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-background/40">
+                      <Image
+                        src={cloudinaryFill(p.photo_url || PLACEHOLDER_PHOTO, 256, 256)}
+                        alt={p.name}
+                        fill
+                        sizes="64px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <div className="font-display text-xl leading-tight md:text-2xl">{p.name}</div>
+                      <div className="text-xs uppercase tracking-[0.18em] opacity-80">{p.title}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-1 flex-col gap-4 p-7">
+                    <p className="text-foreground/80">{p.bio}</p>
+                  </div>
+
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-[var(--accent)] transition-transform duration-500 group-hover:scale-x-100"
+                  />
+                </article>
+              );
+            })}
+          </div>
+        </Section>
+      )}
 
       <Section className="bg-secondary/40">
         <div className="mb-10">

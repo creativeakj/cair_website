@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { T } from "@/components/i18n/T";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Full name is required"),
@@ -64,7 +65,7 @@ export function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]">
-                  Full name
+                  <T path="contact.formName" />
                 </FormLabel>
                 <FormControl>
                   <Input {...field} className="rounded-none border-border bg-background focus-visible:ring-[var(--gold)]" />
@@ -79,7 +80,7 @@ export function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]">
-                  Organization
+                  <T path="contact.formOrganization" />
                 </FormLabel>
                 <FormControl>
                   <Input {...field} className="rounded-none border-border bg-background focus-visible:ring-[var(--gold)]" />
@@ -95,7 +96,7 @@ export function ContactForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]">
-                Email
+                <T path="contact.formEmail" />
               </FormLabel>
               <FormControl>
                 <Input type="email" {...field} className="rounded-none border-border bg-background focus-visible:ring-[var(--gold)]" />
@@ -110,7 +111,7 @@ export function ContactForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]">
-                Subject
+                <T path="contact.formSubject" />
               </FormLabel>
               <FormControl>
                 <Input {...field} className="rounded-none border-border bg-background focus-visible:ring-[var(--gold)]" />
@@ -125,7 +126,7 @@ export function ContactForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--forest-deep)]">
-                Message
+                <T path="contact.formMessage" />
               </FormLabel>
               <FormControl>
                 <Textarea rows={6} {...field} className="rounded-none border-border bg-background focus-visible:ring-[var(--gold)]" />
@@ -139,7 +140,7 @@ export function ContactForm() {
           disabled={submitting}
           className="justify-self-start rounded-sm bg-[var(--forest)] px-7 py-3 text-sm font-medium uppercase tracking-[0.18em] text-[var(--primary-foreground)] hover:bg-[var(--forest-deep)]"
         >
-          {submitting ? "Sending…" : "Submit Inquiry"}
+          {submitting ? "Sending…" : <T path="contact.formSubmit" />}
         </Button>
       </form>
     </Form>

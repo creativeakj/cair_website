@@ -157,8 +157,12 @@ export function TeamMemberFormDialog({
                   <FormItem>
                     <FormLabel>Department</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Executive / Advisory Council" />
+                      <Input {...field} placeholder="Executive / TUM Collaboration / Advisory Council" />
                     </FormControl>
+                    <p className="text-xs text-muted-foreground">
+                      &quot;Executive&quot; shows under Founding Leadership, &quot;TUM Collaboration&quot; shows under
+                      Officers of the Collaboration, anything else shows under Advisors &amp; Fellows.
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}

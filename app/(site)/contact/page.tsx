@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader, Section } from "@/components/PageHeader";
 import { ContactForm } from "@/components/sections/ContactForm";
+import { T } from "@/components/i18n/T";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -16,15 +17,21 @@ export default function Contact() {
   return (
     <>
       <PageHeader
-        eyebrow="Contact"
-        title={<>Engage with <span className="text-[var(--gold-ink)]">CAIR.</span></>}
-        lede="Reach the Executive Secretariat for partnerships, membership inquiries, research collaboration, or media."
+        eyebrow={<T path="contact.eyebrow" />}
+        title={
+          <>
+            <T path="contact.titleStart" /> <span className="text-[var(--gold-ink)]"><T path="contact.titleEmphasis" /></span>
+          </>
+        }
+        lede={<T path="contact.lede" />}
       />
 
       <Section>
         <div className="grid gap-10 md:grid-cols-2">
           <div className="bg-[var(--secondary)] p-10">
-            <div className="eyebrow">Headquarters</div>
+            <div className="eyebrow">
+              <T path="contact.headquarters" />
+            </div>
             <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)]">United States</h2>
             <address className="mt-5 not-italic leading-relaxed text-foreground/80">
               Center for African International Relations
@@ -37,7 +44,9 @@ export default function Contact() {
             </address>
           </div>
           <div className="bg-[var(--secondary)] p-10">
-            <div className="eyebrow">Regional Hub</div>
+            <div className="eyebrow">
+              <T path="contact.regionalHub" />
+            </div>
             <h2 className="mt-3 font-display text-3xl text-[var(--forest-deep)]">Nigeria</h2>
             <address className="mt-5 not-italic leading-relaxed text-foreground/80">
               Center for African International Relations
@@ -53,7 +62,9 @@ export default function Contact() {
       <Section className="border-t border-border">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <span className="eyebrow">Send a message</span>
+            <span className="eyebrow">
+              <T path="contact.sendMessage" />
+            </span>
             <h2 className="mt-3 font-display text-4xl text-[var(--forest-deep)]">
               We welcome partners and inquiries from across Africa, America, and allied nations.
             </h2>

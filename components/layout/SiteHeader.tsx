@@ -5,27 +5,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Search, ChevronDown } from "lucide-react";
+import { T } from "@/components/i18n/T";
+import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 
 const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/team", label: "Team" },
-  { href: "/programs", label: "Programs" },
+  { href: "/", label: "Home", tKey: "home" },
+  { href: "/about", label: "About", tKey: "about" },
+  { href: "/team", label: "Team", tKey: "team" },
+  { href: "/programs", label: "Programs", tKey: "programs" },
   {
     href: "/publications",
     label: "Publications",
+    tKey: "publications",
     children: [
-      { href: "/publications", label: "Publications" },
-      { href: "/news", label: "News" },
+      { href: "/publications", label: "Publications", tKey: "publications" },
+      { href: "/news", label: "News", tKey: "news" },
     ],
   },
-  { href: "/events", label: "Events" },
-  { href: "/contact", label: "Contact" },
+  { href: "/events", label: "Events", tKey: "events" },
+  { href: "/contact", label: "Contact", tKey: "contact" },
 ] as const;
 
-const FLAT_NAV: { href: string; label: string }[] = NAV.flatMap(
-  (n): { href: string; label: string }[] =>
-    "children" in n ? n.children.map((c) => ({ href: c.href, label: c.label })) : [{ href: n.href, label: n.label }],
+const FLAT_NAV: { href: string; label: string; tKey: string }[] = NAV.flatMap(
+  (n): { href: string; label: string; tKey: string }[] =>
+    "children" in n
+      ? n.children.map((c) => ({ href: c.href, label: c.label, tKey: c.tKey }))
+      : [{ href: n.href, label: n.label, tKey: n.tKey }],
 );
 
 function isActive(pathname: string, href: string) {
@@ -34,14 +39,14 @@ function isActive(pathname: string, href: string) {
 }
 
 function NavDropdown({
-  label,
+  tKey,
   href,
   items,
   active,
 }: {
-  label: string;
+  tKey: string;
   href: string;
-  items: ReadonlyArray<{ href: string; label: string }>;
+  items: ReadonlyArray<{ href: string; label: string; tKey: string }>;
   active: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -58,10 +63,12 @@ function NavDropdown({
   return (
     <div ref={ref} className="relative">
       <div className={`flex items-center gap-1 ${cnActive(active)}`}>
-        <Link href={href}>{label}</Link>
+        <Link href={href}>
+          <T path={`nav.${tKey}`} />
+        </Link>
         <button
           type="button"
-          aria-label={`${label} submenu`}
+          aria-label="Publications submenu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
           className="p-0.5"
@@ -78,7 +85,7 @@ function NavDropdown({
               onClick={() => setOpen(false)}
               className="block px-4 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
             >
-              {c.label}
+              <T path={`nav.${c.tKey}`} />
             </Link>
           ))}
         </div>
@@ -113,24 +120,25 @@ export function SiteHeader() {
             "children" in n ? (
               <NavDropdown
                 key={n.href}
-                label={n.label}
+                tKey={n.tKey}
                 href={n.href}
                 items={n.children}
                 active={n.children.some((c) => isActive(pathname, c.href))}
               />
             ) : (
               <Link key={n.href} href={n.href} className={cnActive(isActive(pathname, n.href))}>
-                {n.label}
+                <T path={`nav.${n.tKey}`} />
               </Link>
             ),
           )}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher className="hidden lg:flex" />
           <Link
             href="/membership"
             className="hidden rounded-sm border border-[var(--forest)] bg-[var(--forest)] px-4 py-2 text-xs uppercase tracking-[0.18em] text-[var(--primary-foreground)] transition-colors hover:bg-[var(--forest-deep)] lg:inline-block"
           >
-            Join CAIR
+            <T path="nav.joinCair" />
           </Link>
           <button
             type="button"
@@ -144,9 +152,10 @@ export function SiteHeader() {
         </div>
       </div>
       <div
-        className={`lg:hidden overflow-hidden border-border/60 transition-[max-height,border] duration-300 ease-out ${open ? "max-h-[36rem] border-t" : "max-h-0"}`}
+        className={`lg:hidden overflow-hidden border-border/60 transition-[max-height,border] duration-300 ease-out ${open ? "max-h-[40rem] border-t" : "max-h-0"}`}
       >
         <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3 sm:px-6">
+          <LanguageSwitcher className="mb-3" />
           <div className="relative mb-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
@@ -169,7 +178,7 @@ export function SiteHeader() {
                 isActive(pathname, n.href) ? "font-medium text-[var(--forest-deep)]" : "text-foreground/80"
               }`}
             >
-              {n.label}
+              <T path={`nav.${n.tKey}`} />
             </Link>
           ))}
           {filtered.length === 0 && (
@@ -180,7 +189,7 @@ export function SiteHeader() {
             onClick={() => setOpen(false)}
             className="mt-3 rounded-sm border border-[var(--forest)] bg-[var(--forest)] px-4 py-3 text-center text-xs uppercase tracking-[0.18em] text-[var(--primary-foreground)] transition-colors hover:bg-[var(--forest-deep)]"
           >
-            Join CAIR
+            <T path="nav.joinCair" />
           </Link>
         </nav>
       </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader, Section } from "@/components/PageHeader";
+import { T } from "@/components/i18n/T";
 
 export const metadata: Metadata = {
   title: "About — Vision, Mission & Objectives",
@@ -31,9 +32,14 @@ export default function About() {
   return (
     <>
       <PageHeader
-        eyebrow="About the Center"
-        title={<>A non-partisan center for <span className="text-[var(--gold-ink)]">African–American</span> cooperation.</>}
-        lede="CAIR is a non-governmental, non-profit, non-partisan organization registered in the United States and the Federal Republic of Nigeria, with the mandate to strengthen relations across Africa, America, and allied nations."
+        eyebrow={<T path="about.eyebrow" />}
+        title={
+          <>
+            <T path="about.titleStart" /> <span className="text-[var(--gold-ink)]"><T path="about.titleEmphasis" /></span>{" "}
+            <T path="about.titleEnd" />
+          </>
+        }
+        lede={<T path="about.lede" />}
       />
 
       <Section>

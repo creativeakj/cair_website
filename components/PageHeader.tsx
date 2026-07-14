@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export function PageHeader({ eyebrow, title, lede }: { eyebrow: string; title: ReactNode; lede?: string }) {
+export function PageHeader({ eyebrow, title, lede }: { eyebrow: ReactNode; title: ReactNode; lede?: ReactNode }) {
   return (
     <section className="border-b border-border bg-[var(--secondary)]">
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">

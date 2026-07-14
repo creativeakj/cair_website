@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader, Section } from "@/components/PageHeader";
+import { T } from "@/components/i18n/T";
 import { getPrograms } from "@/lib/services/programs";
 
 export const metadata: Metadata = {
@@ -17,9 +18,13 @@ export default async function Programs() {
   return (
     <>
       <PageHeader
-        eyebrow="Programs"
-        title={<>Five thematic units. <span className="text-[var(--gold-ink)]">One agenda.</span></>}
-        lede="CAIR delivers its mission through specialized units that translate the Constitution's objectives into research, convenings, and partnerships."
+        eyebrow={<T path="programs.eyebrow" />}
+        title={
+          <>
+            <T path="programs.titleStart" /> <span className="text-[var(--gold-ink)]"><T path="programs.titleEmphasis" /></span>
+          </>
+        }
+        lede={<T path="programs.lede" />}
       />
 
       <Section>
@@ -36,7 +41,9 @@ export default async function Programs() {
                 <p className="text-foreground/80">{program.description}</p>
               </div>
               <div className="md:col-span-3">
-                <div className="eyebrow">Signature Work</div>
+                <div className="eyebrow">
+                  <T path="programs.signatureWork" />
+                </div>
                 <ul className="mt-3 space-y-1.5 text-sm text-foreground/75">
                   {program.signature_work.map((it) => (
                     <li key={it} className="flex items-start gap-2">

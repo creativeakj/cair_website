@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/sections/NewsletterForm";
+import { T } from "@/components/i18n/T";
 
 const EXPLORE_LINKS = [
   { href: "/about", label: "About" },
@@ -23,7 +24,7 @@ export async function SiteFooter() {
         <div className="md:col-span-4">
           <div className="font-display text-2xl">Center for African International Relations</div>
           <p className="mt-4 max-w-sm text-sm text-white/70">
-            A non-governmental, non-profit, non-partisan center advancing dialogue, research, and partnership between Africa and America.
+            <T path="footer.tagline" />
           </p>
           <div className="mt-6">
             <div className="eyebrow mb-2 text-[var(--gold)]">Stay informed</div>
@@ -78,7 +79,15 @@ export async function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 px-6 py-5 text-xs text-white/50 md:flex-row">
           <span>© {new Date().getFullYear()} Center for African International Relations. All rights reserved.</span>
-          <span>Registered in the United States · Federal Republic of Nigeria</span>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>Registered in the United States · Federal Republic of Nigeria</span>
+            <Link href="/privacy" className="hover:text-white/80">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white/80">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
