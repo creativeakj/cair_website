@@ -324,12 +324,6 @@ export default async function Home() {
                 The Unifiers Movement
               </span>
             </div>
-            <div className="flex items-center gap-3 rounded-sm bg-white/95 px-5 py-3">
-              <Image src="/images/partners/gaba-logo.jpg" alt="GABA Foundation" width={40} height={40} className="h-10 w-10 object-contain" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--forest-deep)]">
-                GABA Foundation
-              </span>
-            </div>
           </div>
         </div>
       </section>
