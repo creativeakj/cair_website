@@ -15,6 +15,7 @@ import { cloudinaryFill } from "@/lib/utils";
 
 export async function generateStaticParams() {
   const articles = await getPublishedNewsArticles();
+  if (articles.length === 0) return [{ slug: "_placeholder" }];
   return articles.map((a) => ({ slug: a.slug }));
 }
 
