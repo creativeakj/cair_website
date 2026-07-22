@@ -5,6 +5,7 @@ import { subscribersCollection } from "@/lib/db/collections";
 import { sendEmail, internalNotificationAddress } from "@/lib/email";
 import { NewsletterWelcome } from "@/lib/email-templates/NewsletterWelcome";
 import { SubscriberNotification } from "@/lib/email-templates/SubscriberNotification";
+import { getSiteUrl } from "@/lib/utils";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
 
   if (isNewSubscriber) {
     try {
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+      const siteUrl = getSiteUrl();
       await Promise.all([
         sendEmail({
           to: email,

@@ -1,9 +1,10 @@
 import { getPublishedNewsArticles } from "@/lib/services/news";
 import { buildNewsRssFeed } from "@/lib/rss";
+import { getSiteUrl } from "@/lib/utils";
 
 export async function GET() {
   const articles = (await getPublishedNewsArticles()).slice(0, 20);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const xml = buildNewsRssFeed(articles, siteUrl);
 
   return new Response(xml, {

@@ -5,6 +5,7 @@ import { getActiveTeamMembers } from "@/lib/services/team";
 import { TeamGrid, TeamList } from "@/components/sections/TeamGrid";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/team" },
   title: "Team & Leadership",
   description: "Meet the founding leadership, board, and advisors guiding the Center for African International Relations.",
   openGraph: {

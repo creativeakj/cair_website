@@ -4,6 +4,7 @@ import { ContactForm } from "@/components/sections/ContactForm";
 import { T } from "@/components/i18n/T";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description:
     "Contact the Center for African International Relations — headquarters in Lansing, Michigan; regional hub in Abuja, Nigeria.",

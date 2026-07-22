@@ -7,7 +7,7 @@ import { ShareButtons } from "@/components/sections/ShareButtons";
 import { RelatedItems } from "@/components/sections/RelatedItems";
 import { PublicationDownloadButton } from "@/components/sections/PublicationDownloadButton";
 import { getPublicationBySlug, getPublications, getRelatedPublications } from "@/lib/services/publications";
-import { cloudinaryFill } from "@/lib/utils";
+import { cloudinaryFill, getSiteUrl } from "@/lib/utils";
 
 export async function generateStaticParams() {
   const publications = await getPublications();
@@ -27,6 +27,7 @@ export async function generateMetadata({
   return {
     title: publication.title,
     description: publication.summary,
+    alternates: { canonical: `/publications/${publication.slug}` },
     openGraph: {
       title: publication.title,
       description: publication.summary,
@@ -46,7 +47,7 @@ export default async function PublicationDetailPage({
   if (!publication) notFound();
 
   const related = await getRelatedPublications(slug, publication.category);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const url = `${siteUrl}/publications/${slug}`;
 
   const jsonLd = {

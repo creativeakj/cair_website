@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader, Section } from "@/components/PageHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Service",
   description: "The terms governing your use of the Center for African International Relations website.",
 };

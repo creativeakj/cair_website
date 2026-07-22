@@ -7,6 +7,7 @@ import { EventCountdown } from "@/components/sections/EventCountdown";
 import { getEvents } from "@/lib/services/events";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/events" },
   title: "Events",
   description: "Upcoming CAIR forums, dialogues, and convenings advancing Africa–America relations.",
   openGraph: {

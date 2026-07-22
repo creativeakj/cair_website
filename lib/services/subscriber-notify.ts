@@ -1,6 +1,7 @@
 import { subscribersCollection } from "@/lib/db/collections";
 import { sendBatchEmails } from "@/lib/email";
 import { ContentNotification } from "@/lib/email-templates/ContentNotification";
+import { getSiteUrl } from "@/lib/utils";
 
 export async function notifySubscribers(input: {
   kind: "event" | "news" | "publication";
@@ -12,7 +13,7 @@ export async function notifySubscribers(input: {
   const subscribers = await collection.find({ status: "active" }).toArray();
   if (subscribers.length === 0) return 0;
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const url = `${siteUrl}${input.path}`;
 
   const emails = subscribers.map((s) => ({

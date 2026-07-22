@@ -5,6 +5,7 @@ import { MerchItem } from "@/components/sections/MerchItem";
 import { getAvailableMerchItems } from "@/lib/services/merch";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/merch" },
   title: "Merch",
   description: "Official CAIR merchandise: polos, totes, and caps featuring the Center for African International Relations brand.",
   openGraph: {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Outfit } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { getSiteUrl } from "@/lib/utils";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -17,10 +18,13 @@ const outfit = Outfit({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "CAIR — Center for African International Relations",
     template: "%s — CAIR",

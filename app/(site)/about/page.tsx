@@ -3,6 +3,7 @@ import { PageHeader, Section } from "@/components/PageHeader";
 import { T } from "@/components/i18n/T";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About — Vision, Mission & Objectives",
   description: "Learn about CAIR's vision, mission, and the objectives guiding African–American international relations.",
   openGraph: {

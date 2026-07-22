@@ -1,4 +1,5 @@
 import { EmailButton, EmailField, EmailLayout, EmailQuote } from "@/lib/email-templates/EmailLayout";
+import { getSiteUrl } from "@/lib/utils";
 
 export function EventRegistrationNotification({
   eventTitle,
@@ -13,7 +14,7 @@ export function EventRegistrationNotification({
   organization?: string;
   message?: string;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return (
     <EmailLayout preview={`New registration for ${eventTitle}`} eyebrow="New registration" heading={eventTitle}>

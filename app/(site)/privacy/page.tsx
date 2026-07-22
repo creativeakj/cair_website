@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHeader, Section } from "@/components/PageHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
   description: "How the Center for African International Relations collects, uses, and protects your information.",
 };

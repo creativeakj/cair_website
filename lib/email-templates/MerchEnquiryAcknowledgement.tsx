@@ -1,7 +1,8 @@
 import { EmailButton, EmailLayout, EmailParagraph } from "@/lib/email-templates/EmailLayout";
+import { getSiteUrl } from "@/lib/utils";
 
 export function MerchEnquiryAcknowledgement({ name, productName }: { name: string; productName: string }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return (
     <EmailLayout preview={`We've received your enquiry about ${productName}`} heading={`Thank you, ${name}.`}>

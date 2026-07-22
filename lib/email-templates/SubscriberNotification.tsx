@@ -1,7 +1,8 @@
 import { EmailButton, EmailField, EmailLayout } from "@/lib/email-templates/EmailLayout";
+import { getSiteUrl } from "@/lib/utils";
 
 export function SubscriberNotification({ email, source }: { email: string; source?: string }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return (
     <EmailLayout preview={`New newsletter subscriber: ${email}`} heading="New newsletter subscriber">

@@ -17,6 +17,11 @@ export function truncate(text: string, length = 200): string {
   return text.length > length ? `${text.slice(0, length).trimEnd()}…` : text;
 }
 
+export function getSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  return raw.replace(/\/+$/, "");
+}
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()

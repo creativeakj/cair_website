@@ -1,5 +1,6 @@
 import { Body, Container, Head, Html, Img, Link, Preview, Section, Text } from "@react-email/components";
 import type { ReactNode } from "react";
+import { getSiteUrl } from "@/lib/utils";
 
 export const emailColors = {
   navy: "#18213b",
@@ -31,7 +32,7 @@ export function EmailLayout({
   heading?: string;
   children: ReactNode;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return (
     <Html>

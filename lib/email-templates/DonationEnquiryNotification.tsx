@@ -1,4 +1,5 @@
 import { EmailButton, EmailField, EmailLayout, EmailQuote } from "@/lib/email-templates/EmailLayout";
+import { getSiteUrl } from "@/lib/utils";
 
 export function DonationEnquiryNotification({
   name,
@@ -15,7 +16,7 @@ export function DonationEnquiryNotification({
   amount?: string;
   message?: string;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return (
     <EmailLayout preview={`New donation enquiry from ${name}`} eyebrow="New donation enquiry" heading={name}>

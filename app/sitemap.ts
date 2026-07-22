@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getPublications } from "@/lib/services/publications";
 import { getPublishedNewsArticles } from "@/lib/services/news";
 import { getEvents } from "@/lib/services/events";
+import { getSiteUrl } from "@/lib/utils";
 
 const STATIC_ROUTES = [
   "",
@@ -14,10 +15,12 @@ const STATIC_ROUTES = [
   "/membership",
   "/merch",
   "/contact",
+  "/privacy",
+  "/terms",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   const [publications, news, events] = await Promise.all([
     getPublications(),

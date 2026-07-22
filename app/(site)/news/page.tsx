@@ -6,6 +6,7 @@ import { NewsletterForm } from "@/components/sections/NewsletterForm";
 import { getFeaturedNewsArticle, getPublishedNewsArticles } from "@/lib/services/news";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/news" },
   title: "News & Insights",
   description: "Announcements, press releases, and editorial content from the Center for African International Relations.",
   openGraph: {

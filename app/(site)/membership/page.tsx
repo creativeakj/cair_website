@@ -4,6 +4,7 @@ import { Vote, Users, BookOpenCheck, Landmark } from "lucide-react";
 import { PageHeader, Section } from "@/components/PageHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/membership" },
   title: "Membership",
   description: "Become a member of CAIR. Four categories: institutional, individual, associate, and honorary.",
   openGraph: {

@@ -1,7 +1,8 @@
 import { EmailButton, EmailLayout, EmailParagraph } from "@/lib/email-templates/EmailLayout";
+import { getSiteUrl } from "@/lib/utils";
 
 export function ContactAcknowledgement({ name }: { name: string }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return (
     <EmailLayout preview="Thank you for reaching out to CAIR" heading={`Thank you, ${name}.`}>

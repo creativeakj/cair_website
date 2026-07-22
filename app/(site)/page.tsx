@@ -18,7 +18,7 @@ import { getEvents } from "@/lib/services/events";
 import { getPublications } from "@/lib/services/publications";
 import { getPublishedNewsArticles } from "@/lib/services/news";
 import { getActiveTeamMembers } from "@/lib/services/team";
-import { cloudinaryFill } from "@/lib/utils";
+import { cloudinaryFill, getSiteUrl } from "@/lib/utils";
 
 const PLACEHOLDER_PHOTO = "/images/team/placeholder.jpg";
 
@@ -72,7 +72,7 @@ const ORGANIZATION_JSON_LD = {
   "@type": "Organization",
   name: "Center for African International Relations",
   alternateName: "CAIR",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: getSiteUrl(),
   description:
     "A non-governmental, non-profit, non-partisan center advancing dialogue, research, and partnership between Africa and America.",
   address: [

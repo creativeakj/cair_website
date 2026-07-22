@@ -11,7 +11,7 @@ import {
   getRelatedNewsArticles,
 } from "@/lib/services/news";
 import { getTeamMemberById } from "@/lib/services/team";
-import { cloudinaryFill } from "@/lib/utils";
+import { cloudinaryFill, getSiteUrl } from "@/lib/utils";
 
 export async function generateStaticParams() {
   const articles = await getPublishedNewsArticles();
@@ -31,6 +31,7 @@ export async function generateMetadata({
   return {
     title: article.title,
     description: article.excerpt,
+    alternates: { canonical: `/news/${article.slug}` },
     openGraph: {
       title: article.title,
       description: article.excerpt,
@@ -54,7 +55,7 @@ export default async function NewsDetailPage({
     article.author_id ? getTeamMemberById(article.author_id) : Promise.resolve(null),
   ]);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const url = `${siteUrl}/news/${slug}`;
 
   const jsonLd = {

@@ -4,6 +4,7 @@ import { T } from "@/components/i18n/T";
 import { getPrograms } from "@/lib/services/programs";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/programs" },
   title: "Programs & Thematic Units",
   description: "CAIR's thematic units span diplomacy, trade, peace and security, education, and research.",
   openGraph: {

@@ -4,6 +4,7 @@ import { PublicationsBrowser } from "@/components/sections/PublicationsBrowser";
 import { getPublications } from "@/lib/services/publications";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/publications" },
   title: "Publications",
   description: "Research, policy briefs, reports, and data digests from the Center for African International Relations.",
   openGraph: {
