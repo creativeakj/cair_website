@@ -21,6 +21,7 @@ export default async function EventsPage() {
   const upcoming = events.filter((e) => e.status !== "past");
   const past = events.filter((e) => e.status === "past");
   const featured = events.find((e) => e.is_featured) ?? upcoming[0];
+  const upcomingExcludingFeatured = upcoming.filter((e) => e.id !== featured?.id);
 
   return (
     <>
@@ -74,24 +75,28 @@ export default async function EventsPage() {
         </Section>
       )}
 
-      <Section>
-        <div className="mb-10 flex items-end justify-between gap-6">
-          <h2 className="font-display text-3xl text-[var(--forest-deep)] md:text-4xl">Upcoming</h2>
-          <span className="text-sm text-muted-foreground">{upcoming.length} scheduled</span>
-        </div>
-        {upcoming.length === 0 ? (
+      {upcomingExcludingFeatured.length > 0 && (
+        <Section>
+          <div className="mb-10 flex items-end justify-between gap-6">
+            <h2 className="font-display text-3xl text-[var(--forest-deep)] md:text-4xl">Upcoming</h2>
+            <span className="text-sm text-muted-foreground">{upcomingExcludingFeatured.length} scheduled</span>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {upcomingExcludingFeatured.map((e) => (
+              <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {upcoming.length === 0 && (
+        <Section>
           <p className="py-16 text-center text-sm text-muted-foreground">
             No upcoming events at this time. Check back soon
             {past.length > 0 ? " — browse past convenings below." : "."}
           </p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2">
-            {upcoming.map((e) => (
-              <EventCard key={e.id} event={e} />
-            ))}
-          </div>
-        )}
-      </Section>
+        </Section>
+      )}
 
       {past.length > 0 && (
         <Section id="past" className="border-t border-border pt-16">

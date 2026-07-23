@@ -70,7 +70,7 @@ export default async function TeamPage() {
         <Section className="border-t border-border">
           <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="eyebrow">In Collaboration with TUM</div>
+              <div className="eyebrow">In Collaboration with The Unifiers Movement (TUM)</div>
               <h2 className="mt-2 font-display text-3xl text-[var(--forest-deep)] md:text-4xl">
                 Officers of the Collaboration
               </h2>
